@@ -23,8 +23,14 @@
   "homepage": "https://github.com/seanking11/prompt#readme",
   "dependencies": {
     "expo": "^25.0.0",
+    "firebase": "^4.9.1",
     "react": "16.2.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz"
+    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
+    "react-navigation": "^1.0.3",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "redux-promise": "^0.5.3",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",
