@@ -12,7 +12,6 @@ const styles = {
 
 const LoginScreen = () => (
   <View style={styles.containerStyle}>
-    <Text>Login</Text>
     <LoginForm />
   </View>
 )
