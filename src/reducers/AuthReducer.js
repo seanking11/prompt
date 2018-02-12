@@ -25,9 +25,10 @@ export default (state = initialState, action) => {
     case LOGIN_USER_SUCCESS:
       return { ...state, ...initialState, user: action.user }
     case LOGIN_USER_FAIL:
+    console.log('action:', action.error.toString());
       return {
         ...state,
-        error: 'Authentication Failed.',
+        error: action.error.toString().substring(7),
         password: '',
         loading: false
       }

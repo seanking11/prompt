@@ -17,8 +17,8 @@ export const passwordChanged = password => ({
   password
 })
 
-const loginUserFail = (dispatch) => {
-  dispatch({ type: LOGIN_USER_FAIL })
+const loginUserFail = (dispatch, error) => {
+  dispatch({ type: LOGIN_USER_FAIL, error })
 }
 
 const loginUserSuccess = (dispatch, user) => {
@@ -39,6 +39,6 @@ export const loginUser = ({ email, password }) => (dispatch) => {
       console.log(error) // eslint-disable-line no-console
       firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(user => loginUserSuccess(dispatch, user))
-        .catch(() => loginUserFail(dispatch))
+        .catch(() => loginUserFail(dispatch, error))
     })
 }
