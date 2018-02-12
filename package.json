@@ -22,10 +22,12 @@
   },
   "homepage": "https://github.com/seanking11/prompt#readme",
   "dependencies": {
+    "antd-mobile": "^2.1.6",
     "expo": "^25.0.0",
     "firebase": "^4.9.1",
     "react": "16.2.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
+    "react-native-material-textfield": "^0.12.0",
     "react-navigation": "^1.0.3",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
@@ -34,6 +36,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",
+    "babel-plugin-import": "^1.6.3",
     "babel-preset-react-native": "4.0.0",
     "eslint": "^4.10.0",
     "eslint-config-airbnb": "^16.1.0",
