@@ -1,6 +1,7 @@
 import {
   EMAIL_CHANGED,
   PASSWORD_CHANGED,
+  USERNAME_CHANGED,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
   LOGIN_USER
@@ -20,6 +21,8 @@ export default (state = initialState, action) => {
       return { ...state, email: action.email }
     case PASSWORD_CHANGED:
       return { ...state, password: action.password }
+    case USERNAME_CHANGED:
+      return { ...state, username: action.username }
     case LOGIN_USER:
       return { ...state, loading: true, error: '' }
     case LOGIN_USER_SUCCESS:
