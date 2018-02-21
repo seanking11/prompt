@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Text, Dimensions, View } from 'react-native'
+import { Text, Dimensions } from 'react-native'
 import { Button, Card, InputItem, WhiteSpace } from 'antd-mobile'
 import { graphql, compose } from 'react-apollo'
 // import { Input, Spinner, Card, CardSection } from './common'
-import { emailChanged, passwordChanged, usernameChanged, loginUser } from '../actions'
+import { emailChanged, passwordChanged, loginUser } from '../actions'
 import createUserMutation from '../mutations/createUser'
 import loginUserMutation from '../mutations/loginUser'
 
@@ -13,7 +13,7 @@ const MARGIN = 60
 
 class LoginForm extends Component {
   componentWillUpdate(nextProps) {
-    console.log(nextProps);
+    console.log(nextProps)
   }
 
   onEmailChange = text => {
@@ -34,22 +34,20 @@ class LoginForm extends Component {
       // refetchQueries: [{ query }]
     }).catch(err => {
       const errors = err.graphQLErrors.map(error => error.message)
-      console.log('error creating', err);
       this.setState({ errors })
     })
   }
 
   onCreateUserButtonPress = () => {
-    const { email, username, password } = this.props
+    const { email, password } = this.props
 
-    const input = { email, username, password }
+    const input = { email, password }
 
     this.props.mutate({
-      variables: { input }
+      variables: input
       // refetchQueries: [{ query }]
     }).catch(err => {
       const errors = err.graphQLErrors.map(error => error.message)
-      console.log('error creating user:', err)
       this.setState({ errors })
     })
   }
@@ -68,16 +66,6 @@ class LoginForm extends Component {
             onChange={phone => this.props.emailChanged(phone)}
             value={this.props.email}
             error={this.props.error.toLowerCase().indexOf('email') >= 0}
-          />
-
-          <WhiteSpace />
-
-          <InputItem
-            type='text'
-            placeholder='Username'
-            onChangeText={username => this.props.usernameChanged(username)}
-            value={this.props.username}
-            error={this.props.error.toLowerCase().indexOf('username') >= 0}
           />
 
           <WhiteSpace />
@@ -128,5 +116,5 @@ const mapStateToProps = state => ({
 export default compose(
   graphql(createUserMutation),
   // graphql(loginUserMutation),
-  connect(mapStateToProps, { emailChanged, passwordChanged, usernameChanged, loginUser })
+  connect(mapStateToProps, { emailChanged, passwordChanged, loginUser })
 )(LoginForm)
