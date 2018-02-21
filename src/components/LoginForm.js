@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Text, Dimensions, View } from 'react-native'
-import { TextField } from 'react-native-material-textfield'
+import { Text, Dimensions } from 'react-native'
 import { Button, Card, InputItem, WhiteSpace } from 'antd-mobile'
+import { graphql, compose } from 'react-apollo'
 // import { Input, Spinner, Card, CardSection } from './common'
 import { emailChanged, passwordChanged, loginUser } from '../actions'
+import createUserMutation from '../mutations/createUser'
+import loginUserMutation from '../mutations/loginUser'
 
 const WIDTH = Dimensions.get('window').width
 const MARGIN = 60
 
 class LoginForm extends Component {
   componentWillUpdate(nextProps) {
-    console.log(nextProps);
+    console.log(nextProps)
   }
 
   onEmailChange = text => {
@@ -25,7 +27,29 @@ class LoginForm extends Component {
   onButtonPress = () => {
     const { email, password } = this.props
 
-    this.props.loginUser({ email, password })
+    const input = { email, password }
+
+    this.props.mutate({
+      variables: { input }
+      // refetchQueries: [{ query }]
+    }).catch(err => {
+      const errors = err.graphQLErrors.map(error => error.message)
+      this.setState({ errors })
+    })
+  }
+
+  onCreateUserButtonPress = () => {
+    const { email, password } = this.props
+
+    const input = { email, password }
+
+    this.props.mutate({
+      variables: input
+      // refetchQueries: [{ query }]
+    }).catch(err => {
+      const errors = err.graphQLErrors.map(error => error.message)
+      this.setState({ errors })
+    })
   }
 
   render() {
@@ -66,6 +90,15 @@ class LoginForm extends Component {
           >
             Login
           </Button>
+
+          <Button
+            primary
+            loading={this.props.loading}
+            onClick={this.onCreateUserButtonPress}
+            style={{ margin: 15 }}
+          >
+            Create User
+          </Button>
         </Card.Body>
       </Card>
     )
@@ -75,8 +108,13 @@ class LoginForm extends Component {
 const mapStateToProps = state => ({
   email: state.auth.email,
   password: state.auth.password,
+  username: state.auth.username,
   error: state.auth.error,
   loading: state.auth.loading
 })
 
-export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser })(LoginForm)
+export default compose(
+  graphql(createUserMutation),
+  // graphql(loginUserMutation),
+  connect(mapStateToProps, { emailChanged, passwordChanged, loginUser })
+)(LoginForm)
