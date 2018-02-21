@@ -2,7 +2,6 @@ import firebase from 'firebase'
 import {
   EMAIL_CHANGED,
   PASSWORD_CHANGED,
-  USERNAME_CHANGED,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
   LOGIN_USER
@@ -16,11 +15,6 @@ export const emailChanged = email => ({
 export const passwordChanged = password => ({
   type: PASSWORD_CHANGED,
   password
-})
-
-export const usernameChanged = username => ({
-  type: USERNAME_CHANGED,
-  username
 })
 
 const loginUserFail = (dispatch, error) => {
