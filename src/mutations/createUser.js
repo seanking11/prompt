@@ -1,14 +1,11 @@
 import gql from 'graphql-tag'
 
 export default gql`
-  mutation createUserQuery ($input: CreateUserInput!) {
-    createUser(input: $input) {
-      token
-      changedUser {
-        id
-        username
-        createdAt
-      }
+  mutation createUserQuery ($email: String!, $password: String!) {
+    createUser(email: $email, password: $password) {
+      id
+      email
+      createdAt
     }
   }
 `
