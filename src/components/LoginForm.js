@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Text, Dimensions } from 'react-native'
+import { Text, Dimensions, AsyncStorage } from 'react-native'
 import { Button, Card, InputItem, WhiteSpace } from 'antd-mobile'
 import { graphql, compose } from 'react-apollo'
-// import { Input, Spinner, Card, CardSection } from './common'
-import { emailChanged, passwordChanged, loginUser } from '../actions'
+import { emailChanged, passwordChanged } from '../actions'
 import createUserMutation from '../mutations/createUser'
 import loginUserMutation from '../mutations/loginUser'
 
@@ -12,10 +11,6 @@ const WIDTH = Dimensions.get('window').width
 const MARGIN = 60
 
 class LoginForm extends Component {
-  componentWillUpdate(nextProps) {
-    console.log(nextProps)
-  }
-
   onEmailChange = text => {
     this.props.emailChanged(text)
   }
@@ -24,32 +19,41 @@ class LoginForm extends Component {
     this.props.passwordChanged(text)
   }
 
-  onButtonPress = () => {
+  onLoginButtonPress = () => {
     const { email, password } = this.props
 
-    const input = { email, password }
-
-    this.props.mutate({
-      variables: { input }
-      // refetchQueries: [{ query }]
-    }).catch(err => {
-      const errors = err.graphQLErrors.map(error => error.message)
-      this.setState({ errors })
-    })
+    this.loginUser(email, password)
   }
 
   onCreateUserButtonPress = () => {
     const { email, password } = this.props
 
-    const input = { email, password }
+    this.createUser(email, password)
+  }
 
-    this.props.mutate({
-      variables: input
-      // refetchQueries: [{ query }]
-    }).catch(err => {
-      const errors = err.graphQLErrors.map(error => error.message)
-      this.setState({ errors })
-    })
+  loginUser = (email, password) => {
+    const input = { email: { email, password } }
+
+    this.props.loginUser({ variables: input })
+      .then(data => {
+        AsyncStorage.setItem('token', data.data.signinUser.token)
+      })
+      .catch(err => console.log('Errors logging in', err)) // eslint-disable-line no-console
+  }
+
+  createUser = (email, password) => {
+    const input = {
+      authProvider: {
+        email: {
+          email,
+          password
+        }
+      }
+    }
+
+    this.props.createUser({ variables: input })
+      // .then(this.loginUser(email, password))
+      .catch(err => console.log('Error creating user', err)) // eslint-disable-line no-console
   }
 
   render() {
@@ -85,7 +89,7 @@ class LoginForm extends Component {
           <Button
             primary
             loading={this.props.loading}
-            onClick={this.onButtonPress}
+            onClick={this.onLoginButtonPress}
             style={{ margin: 15 }}
           >
             Login
@@ -114,7 +118,7 @@ const mapStateToProps = state => ({
 })
 
 export default compose(
-  graphql(createUserMutation),
-  // graphql(loginUserMutation),
-  connect(mapStateToProps, { emailChanged, passwordChanged, loginUser })
+  graphql(createUserMutation, { name: 'createUser' }),
+  graphql(loginUserMutation, { name: 'loginUser' }),
+  connect(mapStateToProps, { emailChanged, passwordChanged })
 )(LoginForm)
