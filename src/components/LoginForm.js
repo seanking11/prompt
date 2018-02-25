@@ -38,7 +38,7 @@ class LoginForm extends Component {
       .then(data => {
         AsyncStorage.setItem('token', data.data.signinUser.token)
       })
-      .catch(err => console.log('Errors logging in', err)) // eslint-disable-line no-console
+      .catch(err => console.log('Error logging in', err)) // eslint-disable-line no-console
   }
 
   createUser = (email, password) => {
