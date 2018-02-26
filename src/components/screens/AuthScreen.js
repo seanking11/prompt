@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { View, AsyncStorage } from 'react-native'
+import { View, Text, TouchableOpacity, AsyncStorage } from 'react-native'
 import { AppLoading } from 'expo'
 import _ from 'lodash'
 import LoginForm from '../LoginForm'
+import SignupForm from '../SignupForm'
 
 const styles = {
   containerStyle: {
@@ -13,7 +14,10 @@ const styles = {
 }
 
 class AuthScreen extends Component {
-  state = { token: null }
+  state = {
+    token: null,
+    showLogin: true
+  }
 
   async componentWillMount() {
     // AsyncStorage.removeItem('token')
@@ -26,6 +30,8 @@ class AuthScreen extends Component {
     }
   }
 
+  onButtonPress = () => this.setState({ showLogin: !this.state.showLogin })
+
   render() {
     if (_.isNull(this.state.token)) {
       return <AppLoading />
@@ -33,7 +39,10 @@ class AuthScreen extends Component {
 
     return (
       <View style={styles.containerStyle}>
-        <LoginForm />
+        {this.state.showLogin ? <LoginForm navigation={this.props.navigation} /> : <SignupForm />}
+        <TouchableOpacity onPress={this.onButtonPress}>
+          <Text>{this.state.showLogin ? 'Create an account' : 'Already have an account?'}</Text>
+        </TouchableOpacity>
       </View>
     )
   }
