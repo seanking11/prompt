@@ -26,7 +26,7 @@ const store = createStore(
 // eslint-disable-next-line react/prefer-stateless-function
 export default class App extends Component {
   render() {
-    const MainNavigator = TabNavigator({ // eslint-disable-line
+    const MainNavigator = StackNavigator({ // eslint-disable-line
       auth: { screen: AuthScreen },
       main: {
         screen: StackNavigator({ // eslint-disable-line new-cap
