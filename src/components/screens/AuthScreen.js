@@ -14,12 +14,8 @@ const styles = {
 }
 
 class AuthScreen extends Component {
-  static navigationOptions = {
-    header: null
-  }
-
   state = {
-    token: null,
+    token: '',
     showLogin: true
   }
 
