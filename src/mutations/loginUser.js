@@ -1,13 +1,13 @@
 import gql from 'graphql-tag'
 
 export default gql`
-  mutation LoginUserQuery ($input: LoginUserInput!) {
-    loginUser(input: $input) {
+  mutation signinUserQuery($email: AUTH_PROVIDER_EMAIL) {
+    signinUser(email: $email) {
+      token
       user {
-        username
         id
-        lastLogin
         createdAt
+        email
       }
     }
   }

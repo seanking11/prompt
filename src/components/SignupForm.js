@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Text, Dimensions, AsyncStorage } from 'react-native'
+import { Text, Dimensions } from 'react-native'
 import { Button, Card, InputItem, WhiteSpace } from 'antd-mobile'
 import { graphql, compose } from 'react-apollo'
 import { emailChanged, passwordChanged } from '../actions'
-import loginUserMutation from '../mutations/loginUser'
+import createUserMutation from '../mutations/createUser'
 
 const WIDTH = Dimensions.get('window').width
 const MARGIN = 60
@@ -12,9 +12,6 @@ const MARGIN = 60
 class LoginForm extends Component {
   state = {
     error: ''
-  }
-  componentWillMount() {
-    console.log(this.props)
   }
 
   onEmailChange = text => {
@@ -25,11 +22,11 @@ class LoginForm extends Component {
     this.props.passwordChanged(text)
   }
 
-  onLoginButtonPress = () => {
+  onCreateUserButtonPress = () => {
     const { email, password } = this.props
 
     if (this.validateInput(email, password)) {
-      this.loginUser(email, password)
+      this.createUser(email, password)
     }
   }
 
@@ -48,22 +45,26 @@ class LoginForm extends Component {
     return true
   }
 
-  loginUser = (email, password) => {
-    const input = { email: { email, password } }
+  createUser = (email, password) => {
+    const input = {
+      authProvider: {
+        email: {
+          email,
+          password
+        }
+      }
+    }
 
-    this.props.loginUser({ variables: input })
-      .then(data => {
-        AsyncStorage.setItem('token', data.data.signinUser.token)
-        this.props.navigation.navigate('main')
-      })
-      .catch(err => console.log('Error logging in', err)) // eslint-disable-line no-console
+    this.props.createUser({ variables: input })
+      // .then(this.loginUser(email, password))
+      .catch(err => console.log('Error creating user', err)) // eslint-disable-line no-console
   }
 
   render() {
     return (
       <Card style={{ width: WIDTH - MARGIN, margin: MARGIN }}>
         <Card.Header
-          title='Login'
+          title='Signup'
         />
 
         <Card.Body>
@@ -92,10 +93,10 @@ class LoginForm extends Component {
           <Button
             primary
             loading={this.props.loading}
-            onClick={this.onLoginButtonPress}
+            onClick={this.onCreateUserButtonPress}
             style={{ margin: 15 }}
           >
-            Login
+            Create User
           </Button>
         </Card.Body>
       </Card>
@@ -108,10 +109,10 @@ const mapStateToProps = state => ({
   password: state.auth.password,
   username: state.auth.username,
   error: state.auth.error,
-  // loading: state.auth.loading
+  loading: state.auth.loading
 })
 
 export default compose(
-  graphql(loginUserMutation, { name: 'loginUser' }),
+  graphql(createUserMutation, { name: 'createUser' }),
   connect(mapStateToProps, { emailChanged, passwordChanged })
 )(LoginForm)
