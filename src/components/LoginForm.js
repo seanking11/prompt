@@ -13,6 +13,7 @@ class LoginForm extends Component {
   state = {
     error: ''
   }
+
   componentWillMount() {
     console.log(this.props)
   }
@@ -50,13 +51,17 @@ class LoginForm extends Component {
 
   loginUser = (email, password) => {
     const input = { email: { email, password } }
-
-    this.props.loginUser({ variables: input })
+    this.setState({ loading: true })
+    this.props.mutate({ variables: input })
       .then(data => {
         AsyncStorage.setItem('token', data.data.signinUser.token)
         this.props.navigation.navigate('main')
+        this.setState({ loading: false })
       })
-      .catch(err => console.log('Error logging in', err)) // eslint-disable-line no-console
+      .catch(err => {
+        console.log('Error logging in', err) // eslint-disable-line no-console
+        this.setState({ loading: false })
+      })
   }
 
   render() {
@@ -91,7 +96,7 @@ class LoginForm extends Component {
 
           <Button
             primary
-            loading={this.props.loading}
+            loading={this.state.loading}
             onClick={this.onLoginButtonPress}
             style={{ margin: 15 }}
           >
@@ -107,11 +112,10 @@ const mapStateToProps = state => ({
   email: state.auth.email,
   password: state.auth.password,
   username: state.auth.username,
-  error: state.auth.error,
-  // loading: state.auth.loading
+  error: state.auth.error
 })
 
 export default compose(
-  graphql(loginUserMutation, { name: 'loginUser' }),
+  graphql(loginUserMutation),
   connect(mapStateToProps, { emailChanged, passwordChanged })
 )(LoginForm)

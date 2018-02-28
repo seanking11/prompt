@@ -55,9 +55,16 @@ class LoginForm extends Component {
       }
     }
 
+    this.setState({ loading: true })
     this.props.createUser({ variables: input })
+      .then(() => {
+        this.setState({ loading: false })
+      })
       // .then(this.loginUser(email, password))
-      .catch(err => console.log('Error creating user', err)) // eslint-disable-line no-console
+      .catch(err => {
+        console.log('Error creating user', err) // eslint-disable-line no-console
+        this.setState({ loading: false })
+      })
   }
 
   render() {
@@ -92,7 +99,7 @@ class LoginForm extends Component {
 
           <Button
             primary
-            loading={this.props.loading}
+            loading={this.state.loading}
             onClick={this.onCreateUserButtonPress}
             style={{ margin: 15 }}
           >
@@ -108,8 +115,7 @@ const mapStateToProps = state => ({
   email: state.auth.email,
   password: state.auth.password,
   username: state.auth.username,
-  error: state.auth.error,
-  loading: state.auth.loading
+  error: state.auth.error
 })
 
 export default compose(
