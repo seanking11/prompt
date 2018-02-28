@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Text, Dimensions, AsyncStorage } from 'react-native'
+import { Text, Dimensions, AsyncStorage, Keyboard } from 'react-native'
 import { Button, Card, InputItem, WhiteSpace } from 'antd-mobile'
 import { graphql, compose } from 'react-apollo'
 import { emailChanged, passwordChanged } from '../actions'
@@ -51,12 +51,16 @@ class LoginForm extends Component {
 
   loginUser = (email, password) => {
     const input = { email: { email, password } }
+
+    Keyboard.dismiss()
     this.setState({ loading: true })
     this.props.mutate({ variables: input })
       .then(data => {
         AsyncStorage.setItem('token', data.data.signinUser.token)
         this.props.navigation.navigate('main')
         this.setState({ loading: false })
+        this.props.emailChanged('')
+        this.props.passwordChanged('')
       })
       .catch(err => {
         console.log('Error logging in', err) // eslint-disable-line no-console
