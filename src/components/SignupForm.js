@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Text, Dimensions } from 'react-native'
+import { Text, Dimensions, Keyboard } from 'react-native'
 import { Button, Card, InputItem, WhiteSpace } from 'antd-mobile'
 import { graphql, compose } from 'react-apollo'
 import { emailChanged, passwordChanged } from '../actions'
@@ -55,10 +55,12 @@ class LoginForm extends Component {
       }
     }
 
+    Keyboard.dismiss()
     this.setState({ loading: true })
     this.props.createUser({ variables: input })
       .then(() => {
         this.setState({ loading: false })
+        this.props.toggleLoginState()
       })
       // .then(this.loginUser(email, password))
       .catch(err => {

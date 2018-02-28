@@ -20,8 +20,7 @@ class AuthScreen extends Component {
   }
 
   async componentWillMount() {
-    // AsyncStorage.removeItem('token')
-    let token = await AsyncStorage.getItem('token')
+    const token = await AsyncStorage.getItem('token')
 
     if (token) {
       this.props.navigation.navigate('feed')
@@ -39,7 +38,10 @@ class AuthScreen extends Component {
 
     return (
       <View style={styles.containerStyle}>
-        {this.state.showLogin ? <LoginForm navigation={this.props.navigation} /> : <SignupForm />}
+        {this.state.showLogin ?
+          <LoginForm navigation={this.props.navigation} /> :
+          <SignupForm toggleLoginState={this.onButtonPress} />
+        }
         <TouchableOpacity onPress={this.onButtonPress}>
           <Text>{this.state.showLogin ? 'Create an account' : 'Already have an account?'}</Text>
         </TouchableOpacity>
