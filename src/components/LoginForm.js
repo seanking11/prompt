@@ -61,7 +61,7 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <Card style={{ width: WIDTH - MARGIN, marginLeft: MARGIN, marginRight: MARGIN }}>
+      <Card style={{ width: WIDTH - MARGIN, margin: MARGIN }}>
         <Card.Header
           title='Login'
         />
