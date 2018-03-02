@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, AsyncStorage } from 'react-native'
+import CardList from '../CardList'
 
 const logout = navigation => {
   AsyncStorage.removeItem('token')
@@ -16,12 +17,7 @@ class FeedScreen extends Component {
   render() {
     return (
       <View>
-        <Text>FeedScreen</Text>
-        <Text>FeedScreen</Text>
-        <Text>FeedScreen</Text>
-        <Text>FeedScreen</Text>
-        <Text>FeedScreen</Text>
-        <Text>FeedScreen</Text>
+        <CardList />
       </View>
     )
   }
