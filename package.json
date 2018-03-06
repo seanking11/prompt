@@ -34,6 +34,7 @@
     "react": "16.2.0",
     "react-apollo": "^2.1.0-beta.2",
     "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
+    "react-native-image-crop-picker": "^0.20.0",
     "react-navigation": "^1.0.3",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
