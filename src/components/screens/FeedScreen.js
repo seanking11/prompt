@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { View, Text, AsyncStorage } from 'react-native'
+import { View, Text, AsyncStorage, Image, Button } from 'react-native'
+import { ImagePicker } from 'expo'
 
 const logout = navigation => {
   AsyncStorage.removeItem('token')
@@ -13,15 +14,30 @@ class FeedScreen extends Component {
     headerRight: <Text>Add</Text>
   })
 
+  state = {
+    image: {}
+  }
+
+  savePhoto = () => {
+    ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [1, 1]
+    }).then(image => {
+      this.setState({ image })
+    })
+  }
+
   render() {
     return (
       <View>
-        <Text>FeedScreen</Text>
-        <Text>FeedScreen</Text>
-        <Text>FeedScreen</Text>
-        <Text>FeedScreen</Text>
-        <Text>FeedScreen</Text>
-        <Text>FeedScreen</Text>
+        <Button onPress={() => this.savePhoto()} title='Photo' />
+        {!this.state.image.uri ? <Text>No Image</Text> : (
+          <Image
+            style={{ width: 300, height: 300 }}
+            source={{ uri: this.state.image.uri }}
+          />
+        )}
+
       </View>
     )
   }
