@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, AsyncStorage, Image, Button } from 'react-native'
 import { ImagePicker } from 'expo'
+import CreatePost from '../CreatePost'
 
 const logout = navigation => {
   AsyncStorage.removeItem('token')
@@ -15,29 +16,34 @@ class FeedScreen extends Component {
   })
 
   state = {
-    image: {}
+    newPostImage: {},
+    showPost: false
   }
 
   savePhoto = () => {
     ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [1, 1]
-    }).then(image => {
-      this.setState({ image })
+    }).then(newPostImage => {
+      this.setState({ newPostImage, showPost: true })
     })
   }
 
   render() {
     return (
-      <View>
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
         <Button onPress={() => this.savePhoto()} title='Photo' />
-        {!this.state.image.uri ? <Text>No Image</Text> : (
-          <Image
-            style={{ width: 300, height: 300 }}
-            source={{ uri: this.state.image.uri }}
-          />
-        )}
-
+        <Button onPress={() => this.setState({ showPost: !this.state.showPost })} title='Animate' />
+        <CreatePost
+          visible={this.state.showPost}
+          image={this.state.newPostImage}
+        />
       </View>
     )
   }
