@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { View, Text, AsyncStorage, Image, Button } from 'react-native'
+import { View, Text, AsyncStorage, Button } from 'react-native'
 import { ImagePicker } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import CreatePost from '../CreatePost'
+import CreatePostModal from '../CreatePostModal'
 
 const logout = navigation => {
   AsyncStorage.removeItem('token')
@@ -10,15 +10,22 @@ const logout = navigation => {
 }
 
 class FeedScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    headerTitle: new Date().toLocaleDateString(),
-    headerLeft: <Text onPress={() => logout(navigation)}>Logout</Text>,
-    headerRight: <Icon name='plus' color='#000' size={20} style={{ marginRight: 10 }} />
-  })
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state
+    return {
+      headerTitle: new Date().toLocaleDateString(),
+      headerLeft: <Text onPress={() => logout(navigation)}>Logout</Text>,
+      headerRight: <Icon name='plus' color='#000' size={20} style={{ marginRight: 10 }} onPress={() => params.savePhoto()} />
+    }
+  }
 
   state = {
     newPostImage: {},
-    showPost: false
+    modalVisibile: false
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({ savePhoto: this.savePhoto })
   }
 
   savePhoto = () => {
@@ -26,7 +33,9 @@ class FeedScreen extends Component {
       allowsEditing: true,
       aspect: [1, 1]
     }).then(newPostImage => {
-      this.setState({ newPostImage, showPost: true })
+      if (!newPostImage.cancelled) {
+        this.setState({ newPostImage, modalVisibile: true })
+      }
     })
   }
 
@@ -40,10 +49,12 @@ class FeedScreen extends Component {
         }}
       >
         <Button onPress={() => this.savePhoto()} title='Photo' />
-        <Button onPress={() => this.setState({ showPost: !this.state.showPost })} title='Animate' />
-        <CreatePost
-          visible={this.state.showPost}
+        <Button onPress={() => this.setState({ modalVisibile: true })} title='Modal' />
+
+        <CreatePostModal
+          visible={this.state.modalVisibile}
           image={this.state.newPostImage}
+          closeModal={() => this.setState({ modalVisibile: false })}
         />
       </View>
     )
