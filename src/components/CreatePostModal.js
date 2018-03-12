@@ -1,17 +1,20 @@
 import React, { Component } from 'react'
 import {
   View,
-  Text,
   Button,
   Image,
   Modal,
   Dimensions
 } from 'react-native'
-import { Constants } from 'expo'
+import { InputItem } from 'antd-mobile'
 
 const { width } = Dimensions.get('window')
 
 class CreatePostModal extends Component {
+  state = {
+    caption: ''
+  }
+
   render() {
     return (
       <Modal
@@ -19,10 +22,15 @@ class CreatePostModal extends Component {
         animationType='slide'
         transparent={false}
       >
-        <View style={{ marginTop: Constants.statusBarHeight }}>
           <Image
             style={{ width, height: width }}
             source={{ uri: this.props.image.uri }}
+          />
+          <InputItem
+            type='text'
+            placeholder='Add a caption'
+            onChangeText={caption => this.setState({ caption })}
+            value={this.state.caption}
           />
           <Button title='Close' onPress={() => this.props.closeModal()} />
         </View>
