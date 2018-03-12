@@ -7,8 +7,11 @@ import {
   Dimensions
 } from 'react-native'
 import { InputItem } from 'antd-mobile'
+import { DismissKeyboard } from './common'
 
 const { width } = Dimensions.get('window')
+
+const DismissKeyboardView = DismissKeyboard(View)
 
 class CreatePostModal extends Component {
   state = {
@@ -22,6 +25,7 @@ class CreatePostModal extends Component {
         animationType='slide'
         transparent={false}
       >
+        <DismissKeyboardView>
           <Image
             style={{ width, height: width }}
             source={{ uri: this.props.image.uri }}
@@ -33,7 +37,7 @@ class CreatePostModal extends Component {
             value={this.state.caption}
           />
           <Button title='Close' onPress={() => this.props.closeModal()} />
-        </View>
+        </DismissKeyboardView>
       </Modal>
     )
   }
