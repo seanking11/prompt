@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, AsyncStorage, Button } from 'react-native'
+import { View, Text, AsyncStorage, Button, TouchableOpacity } from 'react-native'
 import { ImagePicker } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CreatePostModal from '../CreatePostModal'
@@ -15,7 +15,11 @@ class FeedScreen extends Component {
     return {
       headerTitle: new Date().toLocaleDateString(),
       headerLeft: <Text onPress={() => logout(navigation)}>Logout</Text>,
-      headerRight: <Icon name='plus' color='#000' size={20} style={{ marginRight: 10 }} onPress={() => params.savePhoto()} />
+      headerRight: (
+        <TouchableOpacity onPress={() => params.savePhoto()}>
+          <Icon name='plus' color='#000' size={20} style={{ marginRight: 15, padding: 5 }} />
+        </TouchableOpacity>
+      )
     }
   }
 
