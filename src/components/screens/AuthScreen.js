@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, AsyncStorage } from 'react-native'
 import { AppLoading } from 'expo'
 import _ from 'lodash'
+import { DismissKeyboard } from '../common'
 import LoginForm from '../LoginForm'
 import SignupForm from '../SignupForm'
 
@@ -12,6 +13,8 @@ const styles = {
     flex: 1
   }
 }
+
+const DismissKeyboardView = DismissKeyboard(View) // eslint-disable-line new-cap
 
 class AuthScreen extends Component {
   state = {
@@ -37,7 +40,7 @@ class AuthScreen extends Component {
     }
 
     return (
-      <View style={styles.containerStyle}>
+      <DismissKeyboardView style={styles.containerStyle}>
         {this.state.showLogin ?
           <LoginForm navigation={this.props.navigation} /> :
           <SignupForm toggleLoginState={this.onButtonPress} />
@@ -45,7 +48,7 @@ class AuthScreen extends Component {
         <TouchableOpacity onPress={this.onButtonPress}>
           <Text>{this.state.showLogin ? 'Create an account' : 'Already have an account?'}</Text>
         </TouchableOpacity>
-      </View>
+      </DismissKeyboardView>
     )
   }
 }
