@@ -23,6 +23,9 @@ class CreatePostModal extends Component {
   }
 
   _onCreatePostButtonPress = (localUri) => {
+    if (this.state.caption === '') {
+      this.setState({ error: 'Please add a caption.' })
+    } else {
       const formData = new FormData()
       const fileName = new Date().getTime().toString()
       const data = {
@@ -71,6 +74,8 @@ class CreatePostModal extends Component {
         })
         .catch(err => console.log('Error uploading image', err)) // eslint-disable-line no-console
     }
+  }
+
   render() {
     return (
       <Modal
@@ -88,7 +93,13 @@ class CreatePostModal extends Component {
             placeholder='Add a caption'
             onChangeText={caption => this.setState({ caption })}
             value={this.state.caption}
+            error={this.state.error}
           />
+
+          <Text style={{ fontSize: 18, color: 'red', alignSelf: 'center' }}>
+            {this.state.error}
+          </Text>
+
           <Button title='Create Post' onPress={() => this._onCreatePostButtonPress(this.props.image.uri)} />
           <Button title='Close' onPress={() => this.props.closeModal()} />
         </DismissKeyboardView>
