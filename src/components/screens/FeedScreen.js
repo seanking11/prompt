@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, AsyncStorage, Button, TouchableOpacity } from 'react-native'
 import { ImagePicker } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import PostsList from '../PostsList'
 import CreatePostModal from '../CreatePostModal'
 
 const logout = navigation => {
@@ -52,8 +53,7 @@ class FeedScreen extends Component {
           justifyContent: 'center'
         }}
       >
-        <Button onPress={() => this.savePhoto()} title='Photo' />
-        <Button onPress={() => this.setState({ modalVisibile: true })} title='Modal' />
+        <PostsList />
 
         <CreatePostModal
           visible={this.state.modalVisibile}
