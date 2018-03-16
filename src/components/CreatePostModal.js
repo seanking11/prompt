@@ -10,6 +10,7 @@ import {
 import { InputItem } from 'antd-mobile'
 import { graphql } from 'react-apollo'
 import createPostMutation from '../mutations/createPost'
+import query from '../queries/allPosts'
 import { DismissKeyboard } from './common'
 import config from '../config'
 
@@ -65,7 +66,7 @@ class CreatePostModal extends Component {
             }
           }
 
-          this.props.mutate({ variables: vars })
+          this.props.mutate({ variables: vars, refetchQueries: [{ query }] })
             .then(() => {
               // Successfully created POST
               this.props.closeModal()

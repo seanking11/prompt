@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import { View, Text, AsyncStorage, Button, TouchableOpacity } from 'react-native'
 import { ImagePicker } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { graphql } from 'react-apollo'
 import PostsList from '../PostsList'
 import CreatePostModal from '../CreatePostModal'
+import query from '../../queries/allPosts'
 
 const logout = navigation => {
   AsyncStorage.removeItem('token')
@@ -65,4 +67,4 @@ class FeedScreen extends Component {
   }
 }
 
-export default FeedScreen
+export default graphql(query)(FeedScreen)
