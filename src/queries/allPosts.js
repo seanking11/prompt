@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export default gql`
   query {
-    allPosts {
+    allPosts(orderBy: updatedAt_DESC) {
       caption
       updatedAt
       file {
