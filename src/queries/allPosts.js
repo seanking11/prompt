@@ -10,6 +10,8 @@ export default gql`
       }
       user {
         email
+        firstName
+        lastName
       }
     }
   }
