@@ -1,8 +1,11 @@
 import React from 'react'
 import { View, Image, Dimensions, Text } from 'react-native'
+import { LinearGradient } from 'expo'
 import Card from './common/Card'
+import Avatar from './common/Avatar'
 
-const WIDTH = Dimensions.get('window').width
+const DEVICE_WIDTH = Dimensions.get('window').width
+const CALCULATED_WIDTH = DEVICE_WIDTH - 30
 
 const styles = {
   image: {
@@ -10,18 +13,57 @@ const styles = {
     width: null,
     height: null,
     borderRadius: 10
+  },
+  card: {
+    width: CALCULATED_WIDTH,
+    height: 325,
+    position: 'relative',
+    overflow: 'hidden'
+  },
+  infoBox: {
+    position: 'absolute',
+    width: CALCULATED_WIDTH,
+    height: 60,
+    bottom: 0,
+    zIndex: 1,
+    padding: 15,
+    flexDirection: 'row'
+  },
+  userText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600'
+  },
+  likesText: {
+    color: '#fff',
+    fontSize: 13,
+    fontStyle: 'italic'
+  },
+  avatar: {
+    marginRight: 10
   }
 }
 
 const Post = ({ post }) => (
   <View style={{ flex: 1 }}>
-    <Card style={{ width: WIDTH - 30, height: 325 }}>
+    <Card style={styles.card}>
       <Image
         resizeMode='cover'
         style={styles.image}
         source={{ uri: post.file.url }}
       />
-      <Text>{post.caption}</Text>
+
+      <LinearGradient colors={['transparent', '#181818']} style={styles.infoBox}>
+        <Avatar
+          size={35}
+          img='http://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png'
+          style={styles.avatar}
+        />
+        <View>
+          <Text style={styles.userText}>{post.user.email}</Text>
+          <Text style={styles.likesText}>{post.caption}</Text>
+        </View>
+      </LinearGradient>
     </Card>
   </View>
 )
