@@ -60,7 +60,7 @@ const Post = ({ post }) => (
           style={styles.avatar}
         />
         <View>
-          <Text style={styles.userText}>{post.user.email}</Text>
+          <Text style={styles.userText}>{`${post.user.firstName} ${post.user.lastName}`}</Text>
           <Text style={styles.likesText}>{post.caption}</Text>
         </View>
       </LinearGradient>
