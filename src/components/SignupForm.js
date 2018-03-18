@@ -9,9 +9,23 @@ import createUserMutation from '../mutations/createUser'
 const WIDTH = Dimensions.get('window').width
 const MARGIN = 60
 
+const styles = {
+  error: {
+    fontSize: 18,
+    color: 'red',
+    alignSelf: 'center',
+    marginTop: 15
+  }
+}
+
 class LoginForm extends Component {
   state = {
-    error: ''
+    error: '',
+    triedLoggingIn: false,
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: ''
   }
 
   onEmailChange = text => {
@@ -23,30 +37,27 @@ class LoginForm extends Component {
   }
 
   onCreateUserButtonPress = () => {
-    const { email, password } = this.props
+    this.validateInput()
+  }
 
-    if (this.validateInput(email, password)) {
-      this.createUser(email, password)
+  validateInput = () => { // eslint-disable-line consistent-return
+    if (this.state.firstName !== '' &&
+      this.state.lastName !== '' &&
+      this.state.email !== '' &&
+      this.state.password !== ''
+    ) {
+      this.setState({ error: '', triedLoggingIn: false })
+      this.createUser()
+    } else {
+      this.setState({ triedLoggingIn: true, error: 'Please fill in all fields.' })
     }
   }
 
-  validateInput = (email, password) => {
-    if (!email && !password) {
-      this.setState({ error: 'Please enter an email and password.' })
-      return false
-    } else if (!email) {
-      this.setState({ error: 'Please enter a valid email.' })
-      return false
-    } else if (!password) {
-      this.setState({ error: 'Please enter a password.' })
-      return false
-    }
-    this.setState({ error: '' })
-    return true
-  }
-
-  createUser = (email, password) => {
+  createUser = () => {
+    const { firstName, lastName, email, password } = this.state // eslint-disable-line object-curly-newline
     const input = {
+      firstName,
+      lastName,
       authProvider: {
         email: {
           email,
@@ -79,10 +90,30 @@ class LoginForm extends Component {
         <Card.Body>
           <InputItem
             type='text'
+            placeholder='First Name'
+            onChange={firstName => this.setState({ firstName })}
+            value={this.state.firstName}
+            error={this.state.firstName === '' && this.state.triedLoggingIn}
+          />
+
+          <WhiteSpace />
+
+          <InputItem
+            type='text'
+            placeholder='Last Name'
+            onChange={lastName => this.setState({ lastName })}
+            value={this.state.lastName}
+            error={this.state.lastName === '' && this.state.triedLoggingIn}
+          />
+
+          <WhiteSpace />
+
+          <InputItem
+            type='text'
             placeholder='Email'
-            onChange={phone => this.props.emailChanged(phone)}
-            value={this.props.email}
-            error={this.state.error.toLowerCase().indexOf('email') >= 0}
+            onChange={email => this.setState({ email })}
+            value={this.state.email}
+            error={this.state.email === '' && this.state.triedLoggingIn}
           />
 
           <WhiteSpace />
@@ -90,12 +121,12 @@ class LoginForm extends Component {
           <InputItem
             type='password'
             placeholder='Password'
-            onChangeText={this.onPasswordChange}
-            value={this.props.password}
-            error={this.state.error.toLowerCase().indexOf('password') >= 0}
+            onChange={password => this.setState({ password })}
+            value={this.state.password}
+            error={this.state.password === '' && this.state.triedLoggingIn}
           />
 
-          <Text style={{ fontSize: 18, color: 'red', alignSelf: 'center' }}>
+          <Text style={styles.error}>
             {this.state.error}
           </Text>
 
