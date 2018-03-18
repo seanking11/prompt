@@ -5,7 +5,8 @@ import {
   Image,
   Modal,
   Dimensions,
-  Text
+  Text,
+  AsyncStorage
 } from 'react-native'
 import { InputItem } from 'antd-mobile'
 import { graphql } from 'react-apollo'
@@ -20,7 +21,12 @@ const DismissKeyboardView = DismissKeyboard(View) // eslint-disable-line new-cap
 
 class CreatePostModal extends Component {
   state = {
-    caption: ''
+    caption: '',
+    loggedInUserId: ''
+  }
+
+  componentWillMount() {
+    AsyncStorage.getItem('loggedInUserId').then(loggedInUserId => this.setState({ loggedInUserId }))
   }
 
   _onCreatePostButtonPress = (localUri) => {
@@ -60,7 +66,7 @@ class CreatePostModal extends Component {
           const vars = {
             caption: this.state.caption,
             fileId: this.state.uploadedImageId,
-            userId: tempUserId, // grab from store later
+            userId: this.state.loggedInUserId,
             file: {
               name: `${this.state.uploadedImageId}-${tempUserId}`
             }
