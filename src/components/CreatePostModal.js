@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import {
   View,
-  Button,
   Image,
   Modal,
   Dimensions,
   Text,
   AsyncStorage
 } from 'react-native'
-import { InputItem } from 'antd-mobile'
+import { InputItem, Button } from 'antd-mobile'
 import { graphql } from 'react-apollo'
 import createPostMutation from '../mutations/createPost'
 import query from '../queries/allPosts'
@@ -22,7 +21,8 @@ const DismissKeyboardView = DismissKeyboard(View) // eslint-disable-line new-cap
 class CreatePostModal extends Component {
   state = {
     caption: '',
-    loggedInUserId: ''
+    loggedInUserId: '',
+    loading: false
   }
 
   componentWillMount() {
@@ -33,6 +33,7 @@ class CreatePostModal extends Component {
     if (this.state.caption === '') {
       this.setState({ error: 'Please add a caption.' })
     } else {
+      this.setState({ loading: true })
       const formData = new FormData()
       const fileName = new Date().getTime().toString()
       const data = {
@@ -75,11 +76,18 @@ class CreatePostModal extends Component {
           this.props.mutate({ variables: vars, refetchQueries: [{ query }] })
             .then(() => {
               // Successfully created POST
+              this.setState({ caption: '', loading: false })
               this.props.closeModal()
             })
-            .catch(err => console.log('Error creating post', err)) // eslint-disable-line no-console
+            .catch(err => {
+              this.setState({ loading: false })
+              console.log('Error creating post', err) // eslint-disable-line no-console
+            })
         })
-        .catch(err => console.log('Error uploading image', err)) // eslint-disable-line no-console
+        .catch(err => {
+          this.setState({ loading: false })
+          console.log('Error uploading image', err) // eslint-disable-line no-console
+        })
     }
   }
 
@@ -107,8 +115,20 @@ class CreatePostModal extends Component {
             {this.state.error}
           </Text>
 
-          <Button title='Create Post' onPress={() => this._onCreatePostButtonPress(this.props.image.uri)} />
-          <Button title='Close' onPress={() => this.props.closeModal()} />
+          <Button
+            onClick={() => this._onCreatePostButtonPress(this.props.image.uri)}
+            loading={this.state.loading}
+            style={{ margin: 15 }}
+          >
+            Create Post
+          </Button>
+          <Button
+            type='warning'
+            onClick={() => this.props.closeModal()}
+            style={{ margin: 15 }}
+          >
+            Close
+          </Button>
         </DismissKeyboardView>
       </Modal>
     )
