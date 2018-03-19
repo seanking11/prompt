@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, AsyncStorage, TouchableOpacity } from 'react-native'
+import { View, Text, AsyncStorage, TouchableOpacity, StatusBar } from 'react-native'
 import { ImagePicker } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { graphql } from 'react-apollo'
@@ -56,6 +56,10 @@ class FeedScreen extends Component {
           justifyContent: 'center'
         }}
       >
+        <StatusBar
+          animated
+          hidden={this.state.modalVisibile}
+        />
         <PostsList />
 
         <CreatePostModal
