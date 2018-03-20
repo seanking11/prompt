@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Image, Dimensions, Text } from 'react-native'
 import { LinearGradient } from 'expo'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import Card from './common/Card'
 import Avatar from './common/Avatar'
 
@@ -63,6 +64,7 @@ const Post = ({ post }) => (
           <Text style={styles.userText}>{`${post.user.firstName} ${post.user.lastName}`}</Text>
           <Text style={styles.likesText}>{post.caption}</Text>
         </View>
+        <Icon name='heart' size={20} />
       </LinearGradient>
     </Card>
   </View>
