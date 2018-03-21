@@ -42,6 +42,12 @@ const styles = {
   },
   avatar: {
     marginRight: 10
+  },
+  container: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    flex: 1
   }
 }
 
@@ -55,16 +61,18 @@ const Post = ({ post }) => (
       />
 
       <LinearGradient colors={['transparent', '#181818']} style={styles.infoBox}>
-        <Avatar
-          size={35}
-          img='http://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png'
-          style={styles.avatar}
-        />
-        <View>
-          <Text style={styles.userText}>{`${post.user.firstName} ${post.user.lastName}`}</Text>
-          <Text style={styles.likesText}>{post.caption}</Text>
+        <View style={styles.container}>
+          <Avatar
+            size={35}
+            img='http://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png'
+            style={styles.avatar}
+          />
+          <View style={{ marginRight: 'auto' }}>
+            <Text style={styles.userText}>{`${post.user.firstName} ${post.user.lastName}`}</Text>
+            <Text style={styles.likesText}>{post.caption}</Text>
+          </View>
+          <Icon name='heart-o' size={25} color='#fff' />
         </View>
-        <Icon name='heart' size={20} />
       </LinearGradient>
     </Card>
   </View>
