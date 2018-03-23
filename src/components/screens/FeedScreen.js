@@ -60,6 +60,7 @@ class FeedScreen extends Component {
           animated
           hidden={this.state.modalVisibile}
         />
+
         <PostsList />
 
         <CreatePostModal
