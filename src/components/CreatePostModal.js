@@ -5,10 +5,12 @@ import {
   Modal,
   Dimensions,
   Text,
-  AsyncStorage
+  AsyncStorage,
+  TouchableOpacity
 } from 'react-native'
 import { InputItem, Button } from 'antd-mobile'
 import { graphql } from 'react-apollo'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import createPostMutation from '../mutations/createPost'
 import query from '../queries/allPosts'
 import { DismissKeyboard } from './common'
@@ -17,6 +19,21 @@ import config from '../config'
 const { width } = Dimensions.get('window')
 
 const DismissKeyboardView = DismissKeyboard(View) // eslint-disable-line new-cap
+
+const styles = {
+  closeIconContainer: {
+    width: 40,
+    height: 40,
+    backgroundColor: 'rgba(55, 55, 55, .9)',
+    borderRadius: 20,
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    zIndex: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+}
 
 class CreatePostModal extends Component {
   state = {
@@ -98,7 +115,10 @@ class CreatePostModal extends Component {
         animationType='slide'
         transparent={false}
       >
-        <DismissKeyboardView>
+        <DismissKeyboardView style={{ position: 'relative' }}>
+          <TouchableOpacity style={styles.closeIconContainer} onPress={() => this.props.closeModal()}>
+            <Icon name='times' size={25} color='#fff' />
+          </TouchableOpacity>
           <Image
             style={{ width, height: width }}
             source={{ uri: this.props.image.uri }}
