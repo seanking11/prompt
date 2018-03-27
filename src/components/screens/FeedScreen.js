@@ -3,6 +3,8 @@ import { View, Text, AsyncStorage, TouchableOpacity, StatusBar } from 'react-nat
 import { ImagePicker } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { graphql } from 'react-apollo'
+import FAB from 'react-native-fab'
+import { Modal as PromptModal } from 'antd-mobile'
 import PostsList from '../PostsList'
 import CreatePostModal from '../CreatePostModal'
 import query from '../../queries/allPosts'
@@ -29,7 +31,8 @@ class FeedScreen extends Component {
 
   state = {
     newPostImage: {},
-    modalVisibile: false
+    createPostModalVisible: false,
+    promptModalVisibile: false
   }
 
   componentDidMount() {
@@ -42,7 +45,7 @@ class FeedScreen extends Component {
       aspect: [1, 1]
     }).then(newPostImage => {
       if (!newPostImage.cancelled) {
-        this.setState({ newPostImage, modalVisibile: true })
+        this.setState({ newPostImage, createPostModalVisible: true })
       }
     })
   }
@@ -58,15 +61,36 @@ class FeedScreen extends Component {
       >
         <StatusBar
           animated
-          hidden={this.state.modalVisibile}
+          hidden={this.state.createPostModalVisible}
         />
 
         <PostsList />
 
+        <FAB
+          buttonColor='#000'
+          iconTextColor='#FFFFFF'
+          onClickAction={() => this.setState({ promptModalVisibile: true })}
+          iconTextComponent={<Icon name='lightbulb-o' color='#000' size={20} />}
+        />
+
+        <PromptModal
+          visible={this.state.promptModalVisibile}
+          transparent
+          title={<Text style={{ fontWeight: 'bold', fontSize: 20 }}>Today's Prompt</Text>}
+          footer={[{
+            text: 'Ok',
+            onPress: () => this.setState({ promptModalVisibile: false })
+          }]}
+        >
+          <View>
+            <Text style={{ textAlign: 'center', marginTop: 15 }}>Make something big look small</Text>
+          </View>
+        </PromptModal>
+
         <CreatePostModal
-          visible={this.state.modalVisibile}
+          visible={this.state.createPostModalVisible}
           image={this.state.newPostImage}
-          closeModal={() => this.setState({ modalVisibile: false })}
+          closeModal={() => this.setState({ createPostModalVisible: false })}
         />
       </View>
     )
