@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, Image, Dimensions, Text } from 'react-native'
+import React, { Component } from 'react'
+import { View, Image, Dimensions, Text, Animated, TouchableWithoutFeedback } from 'react-native'
 import { LinearGradient } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Card from './common/Card'
@@ -7,6 +7,7 @@ import Avatar from './common/Avatar'
 
 const DEVICE_WIDTH = Dimensions.get('window').width
 const CALCULATED_WIDTH = DEVICE_WIDTH - 30
+const DURATION = 500
 
 const styles = {
   image: {
@@ -19,7 +20,14 @@ const styles = {
     width: CALCULATED_WIDTH,
     height: 325,
     position: 'relative',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 25,
+    borderRadius: 10,
+    elevation: 1,
+    margin: 15
   },
   infoBox: {
     position: 'absolute',
@@ -51,32 +59,63 @@ const styles = {
   }
 }
 
-const Post = ({ post }) => (
-  <View style={{ flex: 1 }}>
-    <Card style={styles.card}>
-      <Image
-        resizeMode='cover'
-        style={styles.image}
-        source={{ uri: post.file.url }}
-      />
+class Post extends Component {
+  state = {
+    width: new Animated.Value(CALCULATED_WIDTH),
+    margin: new Animated.Value(15),
+    open: false
+  }
 
-      <LinearGradient colors={['transparent', '#181818']} style={styles.infoBox}>
-        <View style={styles.container}>
-          <Avatar
-            size={35}
-            img='http://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png'
-            style={styles.avatar}
-          />
-          <View style={{ marginRight: 'auto' }}>
-            <Text style={styles.userText}>{`${post.user.firstName} ${post.user.lastName}`}</Text>
-            <Text style={styles.likesText}>{post.caption}</Text>
-          </View>
-          <Icon name='heart-o' size={25} color='#fff' />
-        </View>
-      </LinearGradient>
-    </Card>
-  </View>
-)
+  _onPostPress() {
+    console.log('pressed')
+    this.setState({ open: !this.state.open })
+    Animated.spring(
+      this.state.width,
+      {
+        toValue: this.state.open ? DEVICE_WIDTH : CALCULATED_WIDTH,
+        duration: DURATION
+      }
+    ).start()
+    Animated.spring(
+      this.state.margin,
+      {
+        toValue: this.state.open ? 0 : 15,
+        duration: DURATION
+      }
+    ).start()
+  }
 
+  render() {
+    const { post } = this.props
+    return (
+      <View style={{ flex: 1 }}>
+        <TouchableWithoutFeedback onPressIn={() => this._onPostPress()}>
+          <Animated.View style={[styles.card, { width: this.state.width, margin: this.state.margin }]}>
+            <Image
+              resizeMode='cover'
+              style={styles.image}
+              source={{ uri: post.file.url }}
+            />
+
+            <LinearGradient colors={['transparent', '#181818']} style={styles.infoBox}>
+              <View style={styles.container}>
+                <Avatar
+                  size={35}
+                  img='http://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png'
+                  style={styles.avatar}
+                />
+                <View style={{ marginRight: 'auto' }}>
+                  <Text style={styles.userText}>{`${post.user.firstName} ${post.user.lastName}`}</Text>
+                  <Text style={styles.likesText}>{post.caption}</Text>
+                </View>
+                <Icon name='heart-o' size={25} color='#fff' />
+              </View>
+            </LinearGradient>
+          </Animated.View>
+        </TouchableWithoutFeedback>
+      </View>
+    )
+  }
+}
 
 export default Post
