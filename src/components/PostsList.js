@@ -5,10 +5,6 @@ import Post from './Post'
 import allPostsQuery from '../queries/allPosts'
 
 class PostsList extends Component {
-  componentWillMount() {
-    console.log('WillMount', this.props)
-  }
-
   render() {
     return (
       <ScrollView>

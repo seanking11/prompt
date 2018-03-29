@@ -14,10 +14,6 @@ class LoginForm extends Component {
     error: ''
   }
 
-  componentWillMount() {
-    console.log(this.props)
-  }
-
   onEmailChange = text => {
     this.props.emailChanged(text)
   }
