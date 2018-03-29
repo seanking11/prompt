@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { View, Image, Dimensions, Text, Animated, TouchableWithoutFeedback } from 'react-native'
+import { View, Image, Dimensions, Animated, TouchableWithoutFeedback } from 'react-native'
 import { LinearGradient } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import Card from './common/Card'
-import Avatar from './common/Avatar'
+import { Avatar, MyAppText } from './common'
 
 const DEVICE_WIDTH = Dimensions.get('window').width
 const CALCULATED_WIDTH = DEVICE_WIDTH - 30
@@ -46,7 +45,6 @@ const styles = {
   likesText: {
     color: '#fff',
     fontSize: 13,
-    fontStyle: 'italic',
     fontFamily: 'ProximaNovaRegularIt'
   },
   avatar: {
@@ -106,8 +104,8 @@ class Post extends Component {
                   style={styles.avatar}
                 />
                 <View style={{ marginRight: 'auto' }}>
-                  <Text style={styles.userText}>{`${post.user.firstName} ${post.user.lastName}`}</Text>
-                  <Text style={styles.likesText}>{post.caption}</Text>
+                  <MyAppText style={styles.userText}>{`${post.user.firstName} ${post.user.lastName}`}</MyAppText>
+                  <MyAppText style={styles.likesText}>{post.caption}</MyAppText>
                 </View>
                 <Icon name='heart-o' size={25} color='#fff' />
               </View>

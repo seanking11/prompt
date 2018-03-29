@@ -5,6 +5,7 @@ import CardSection from './CardSection'
 import DismissKeyboard from './DismissKeyboard'
 import Input from './Input'
 import Spinner from './Spinner'
+import MyAppText from './MyAppText'
 
 export {
   Avatar,
@@ -13,5 +14,6 @@ export {
   CardSection,
   DismissKeyboard,
   Input,
-  Spinner
+  Spinner,
+  MyAppText
 }

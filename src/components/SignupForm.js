@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Text, Dimensions, Keyboard } from 'react-native'
+import { Dimensions, Keyboard } from 'react-native'
 import { Button, Card, InputItem, WhiteSpace } from 'antd-mobile'
 import { graphql, compose } from 'react-apollo'
+import { MyAppText } from './common'
 import { emailChanged, passwordChanged } from '../actions'
 import createUserMutation from '../mutations/createUser'
 
@@ -126,9 +127,9 @@ class LoginForm extends Component {
             error={this.state.password === '' && this.state.triedLoggingIn}
           />
 
-          <Text style={styles.error}>
+          <MyAppText style={styles.error}>
             {this.state.error}
-          </Text>
+          </MyAppText>
 
           <Button
             primary

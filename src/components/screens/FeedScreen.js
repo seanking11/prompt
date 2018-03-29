@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { View, Text, AsyncStorage, TouchableOpacity, StatusBar } from 'react-native'
+import { View, AsyncStorage, TouchableOpacity, StatusBar } from 'react-native'
 import { ImagePicker } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { graphql } from 'react-apollo'
 import FAB from 'react-native-fab'
 import { Modal as PromptModal } from 'antd-mobile'
+import { MyAppText } from '../common'
 import PostsList from '../PostsList'
 import CreatePostModal from '../CreatePostModal'
 import query from '../../queries/allPosts'
@@ -20,7 +21,7 @@ class FeedScreen extends Component {
     const { params = {} } = navigation.state
     return {
       headerTitle: new Date().toLocaleDateString(),
-      headerLeft: <Text onPress={() => logout(navigation)}>Logout</Text>,
+      headerLeft: <MyAppText onPress={() => logout(navigation)}>Logout</MyAppText>,
       headerRight: (
         <TouchableOpacity onPress={() => params.savePhoto()}>
           <Icon name='plus' color='#000' size={20} style={{ marginRight: 15, padding: 5 }} />
@@ -76,14 +77,14 @@ class FeedScreen extends Component {
         <PromptModal
           visible={this.state.promptModalVisibile}
           transparent
-          title={<Text style={{ fontWeight: 'bold', fontSize: 20 }}>Today's Prompt</Text>}
+          title={<MyAppText style={{ fontWeight: 'bold', fontSize: 20 }}>Today's Prompt</MyAppText>}
           footer={[{
             text: 'Ok',
             onPress: () => this.setState({ promptModalVisibile: false })
           }]}
         >
           <View>
-            <Text style={{ textAlign: 'center', marginTop: 15 }}>Make something big look small</Text>
+            <MyAppText style={{ textAlign: 'center', marginTop: 15 }}>Make something big look small</MyAppText>
           </View>
         </PromptModal>
 

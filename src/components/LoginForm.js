@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Text, Dimensions, AsyncStorage, Keyboard } from 'react-native'
+import { Dimensions, AsyncStorage, Keyboard } from 'react-native'
 import { Button, Card, InputItem, WhiteSpace } from 'antd-mobile'
 import { graphql, compose } from 'react-apollo'
+import { MyAppText } from './common'
 import { emailChanged, passwordChanged } from '../actions'
 import loginUserMutation from '../mutations/loginUser'
 
@@ -91,9 +92,9 @@ class LoginForm extends Component {
             error={this.state.error.toLowerCase().indexOf('password') >= 0}
           />
 
-          <Text style={{ fontSize: 18, color: 'red', alignSelf: 'center' }}>
+          <MyAppText style={{ fontSize: 18, color: 'red', alignSelf: 'center' }}>
             {this.state.error}
-          </Text>
+          </MyAppText>
 
           <Button
             primary

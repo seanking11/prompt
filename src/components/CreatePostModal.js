@@ -4,7 +4,6 @@ import {
   Image,
   Modal,
   Dimensions,
-  Text,
   AsyncStorage,
   TouchableOpacity
 } from 'react-native'
@@ -13,7 +12,7 @@ import { graphql } from 'react-apollo'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import createPostMutation from '../mutations/createPost'
 import query from '../queries/allPosts'
-import { DismissKeyboard } from './common'
+import { DismissKeyboard, MyAppText } from './common'
 import config from '../config'
 
 const { width } = Dimensions.get('window')
@@ -131,9 +130,9 @@ class CreatePostModal extends Component {
             error={this.state.error}
           />
 
-          <Text style={{ fontSize: 18, color: 'red', alignSelf: 'center' }}>
+          <MyAppText style={{ fontSize: 18, color: 'red', alignSelf: 'center' }}>
             {this.state.error}
-          </Text>
+          </MyAppText>
 
           <Button
             onClick={() => this._onCreatePostButtonPress(this.props.image.uri)}

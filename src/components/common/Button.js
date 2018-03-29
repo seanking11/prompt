@@ -1,5 +1,6 @@
 import React from 'react'
-import { Text, TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
+import { MyAppText } from './MyAppText'
 
 const styles = {
   buttonStyle: {
@@ -29,9 +30,9 @@ const Button = ({ onPress, children }) => {
       style={buttonStyle}
       onPress={onPress}
     >
-      <Text style={textStyle}>
+      <MyAppText style={textStyle}>
         {children}
-      </Text>
+      </MyAppText>
     </TouchableOpacity>
   )
 }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, AsyncStorage } from 'react-native'
+import { View, TouchableOpacity, AsyncStorage } from 'react-native'
 import { AppLoading } from 'expo'
 import _ from 'lodash'
-import { DismissKeyboard } from '../common'
+import { DismissKeyboard, MyAppText } from '../common'
 import LoginForm from '../LoginForm'
 import SignupForm from '../SignupForm'
 
@@ -46,7 +46,7 @@ class AuthScreen extends Component {
           <SignupForm toggleLoginState={this.onButtonPress} />
         }
         <TouchableOpacity onPress={this.onButtonPress}>
-          <Text>{this.state.showLogin ? 'Create an account' : 'Already have an account?'}</Text>
+          <MyAppText>{this.state.showLogin ? 'Create an account' : 'Already have an account?'}</MyAppText>
         </TouchableOpacity>
       </DismissKeyboardView>
     )
