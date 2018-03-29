@@ -16,12 +16,18 @@ const logout = navigation => {
   navigation.navigate('auth')
 }
 
+const HeaderTitle = () => (
+  <MyAppText style={{ fontFamily: 'ProximaNovaBold', fontSize: 20 }}>
+    {new Date().toLocaleDateString()}
+  </MyAppText>
+)
+
 class FeedScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state
     return {
-      headerTitle: new Date().toLocaleDateString(),
-      headerLeft: <MyAppText onPress={() => logout(navigation)}>Logout</MyAppText>,
+      headerTitle: <HeaderTitle />,
+      headerLeft: <MyAppText onPress={() => logout(navigation)} style={{ marginLeft: 15 }}>Logout</MyAppText>,
       headerRight: (
         <TouchableOpacity onPress={() => params.savePhoto()}>
           <Icon name='plus' color='#000' size={20} style={{ marginRight: 15, padding: 5 }} />
