@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import { Font, AppLoading } from 'expo'
+import { View } from 'react-native'
 import { createStore, applyMiddleware } from 'redux'
-import { Animated, Easing } from 'react-native'
 import { Provider } from 'react-redux'
 import ReduxThunk from 'redux-thunk'
 import promiseMiddleware from 'redux-promise'
@@ -25,6 +26,20 @@ const store = createStore(
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class App extends Component {
+  state = {
+    fontLoaded: false
+  }
+
+  _fetchFonts = () => {
+    Font.loadAsync({
+      ProximaNovaRegular: require('./assets/fonts/ProximaNovaRegular.otf'),
+      ProximaNovaRegularIt: require('./assets/fonts/ProximaNova-RegularIt.otf'),
+      ProximaNovaBold: require('./assets/fonts/ProximaNovaBold.otf')
+    }).then(() => {
+      this.setState({ fontLoaded: true })
+    }).catch(err => console.log(err)) // eslint-disable-line no-console
+  }
+
   render() {
     const MainNavigator = TabNavigator({ // eslint-disable-line
       auth: { screen: AuthScreen },
@@ -45,6 +60,16 @@ export default class App extends Component {
         tabBarVisible: false
       }
     }) // eslint-disable-line function-paren-newline
+
+    if (!this.state.fontLoaded) {
+      return (
+        <AppLoading
+          startAsync={this._fetchFonts}
+          onFinish={() => this.setState({ fontLoaded: true })}
+          onError={e => console.log('error fetching fonts: ', e)}
+        />
+      )
+    }
 
     return (
       <Provider store={store}>
