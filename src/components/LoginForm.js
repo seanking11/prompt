@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Dimensions, AsyncStorage, Keyboard } from 'react-native'
 import { Button, Card, InputItem, WhiteSpace } from 'antd-mobile'
 import { graphql, compose } from 'react-apollo'
+import InputItemStyle from 'antd-mobile/lib/input-item/style/index.native'
 import { MyAppText } from './common'
 import { emailChanged, passwordChanged } from '../actions'
 import loginUserMutation from '../mutations/loginUser'
@@ -67,10 +68,18 @@ class LoginForm extends Component {
   }
 
   render() {
+    const inputStyles = {
+      ...InputItemStyle,
+      input: {
+        ...InputItemStyle.input,
+        fontFamily: 'ProximaNovaRegular'
+      }
+    }
+
     return (
       <Card style={{ width: WIDTH - MARGIN, margin: MARGIN }}>
         <Card.Header
-          title='Login'
+          title={<MyAppText style={{ fontSize: 20, fontFamily: 'ProximaNovaBold' }}>Login</MyAppText>}
         />
 
         <Card.Body>
@@ -80,6 +89,7 @@ class LoginForm extends Component {
             onChange={phone => this.props.emailChanged(phone)}
             value={this.props.email}
             error={this.state.error.toLowerCase().indexOf('email') >= 0}
+            styles={inputStyles}
           />
 
           <WhiteSpace />
@@ -90,6 +100,7 @@ class LoginForm extends Component {
             onChangeText={this.onPasswordChange}
             value={this.props.password}
             error={this.state.error.toLowerCase().indexOf('password') >= 0}
+            styles={inputStyles}
           />
 
           <MyAppText style={{ fontSize: 18, color: 'red', alignSelf: 'center' }}>
@@ -102,7 +113,7 @@ class LoginForm extends Component {
             onClick={this.onLoginButtonPress}
             style={{ margin: 15 }}
           >
-            Login
+            <MyAppText>Login</MyAppText>
           </Button>
         </Card.Body>
       </Card>

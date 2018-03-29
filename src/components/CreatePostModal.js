@@ -10,6 +10,7 @@ import {
 import { InputItem, Button } from 'antd-mobile'
 import { graphql } from 'react-apollo'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import InputItemStyle from 'antd-mobile/lib/input-item/style/index.native'
 import createPostMutation from '../mutations/createPost'
 import query from '../queries/allPosts'
 import { DismissKeyboard, MyAppText } from './common'
@@ -31,6 +32,13 @@ const styles = {
     zIndex: 10,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  inputStyles: {
+    ...InputItemStyle,
+    input: {
+      ...InputItemStyle.input,
+      fontFamily: 'ProximaNovaRegular'
+    }
   }
 }
 
@@ -128,6 +136,7 @@ class CreatePostModal extends Component {
             onChangeText={caption => this.setState({ caption })}
             value={this.state.caption}
             error={this.state.error}
+            styles={styles.inputStyles}
           />
 
           <MyAppText style={{ fontSize: 18, color: 'red', alignSelf: 'center' }}>
@@ -139,14 +148,14 @@ class CreatePostModal extends Component {
             loading={this.state.loading}
             style={{ margin: 15 }}
           >
-            Create Post
+            <MyAppText>Create Post</MyAppText>
           </Button>
           <Button
             type='warning'
             onClick={() => this.props.closeModal()}
             style={{ margin: 15 }}
           >
-            Close
+            <MyAppText>Close</MyAppText>
           </Button>
         </DismissKeyboardView>
       </Modal>

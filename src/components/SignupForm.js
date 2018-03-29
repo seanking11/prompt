@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Dimensions, Keyboard } from 'react-native'
 import { Button, Card, InputItem, WhiteSpace } from 'antd-mobile'
 import { graphql, compose } from 'react-apollo'
+import InputItemStyle from 'antd-mobile/lib/input-item/style/index.native'
 import { MyAppText } from './common'
 import { emailChanged, passwordChanged } from '../actions'
 import createUserMutation from '../mutations/createUser'
@@ -82,10 +83,18 @@ class LoginForm extends Component {
   }
 
   render() {
+    const inputStyles = {
+      ...InputItemStyle,
+      input: {
+        ...InputItemStyle.input,
+        fontFamily: 'ProximaNovaRegular'
+      }
+    }
+
     return (
       <Card style={{ width: WIDTH - MARGIN, margin: MARGIN }}>
         <Card.Header
-          title='Signup'
+          title={<MyAppText style={{ fontSize: 20, fontFamily: 'ProximaNovaBold' }}>Signup</MyAppText>}
         />
 
         <Card.Body>
@@ -95,6 +104,7 @@ class LoginForm extends Component {
             onChange={firstName => this.setState({ firstName })}
             value={this.state.firstName}
             error={this.state.firstName === '' && this.state.triedLoggingIn}
+            styles={inputStyles}
           />
 
           <WhiteSpace />
@@ -105,6 +115,7 @@ class LoginForm extends Component {
             onChange={lastName => this.setState({ lastName })}
             value={this.state.lastName}
             error={this.state.lastName === '' && this.state.triedLoggingIn}
+            styles={inputStyles}
           />
 
           <WhiteSpace />
@@ -137,7 +148,7 @@ class LoginForm extends Component {
             onClick={this.onCreateUserButtonPress}
             style={{ margin: 15 }}
           >
-            Create User
+            <MyAppText>Create User</MyAppText>
           </Button>
         </Card.Body>
       </Card>
