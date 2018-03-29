@@ -41,12 +41,13 @@ const styles = {
   userText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '600'
+    fontFamily: 'ProximaNovaBold'
   },
   likesText: {
     color: '#fff',
     fontSize: 13,
-    fontStyle: 'italic'
+    fontStyle: 'italic',
+    fontFamily: 'ProximaNovaRegularIt'
   },
   avatar: {
     marginRight: 10
