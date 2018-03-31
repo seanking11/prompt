@@ -21,4 +21,9 @@ class PostsList extends Component {
   }
 }
 
-export default graphql(allPostsQuery)(PostsList)
+const today = new Date()
+today.setHours(0, 0, 0, 0)
+
+export default graphql(allPostsQuery, {
+  options: () => ({ variables: { fetchAfterDate: today.toISOString().slice(0, -1) } })
+})(PostsList)
