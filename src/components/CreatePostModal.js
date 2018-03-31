@@ -106,7 +106,7 @@ class CreatePostModal extends Component {
               this.props.closeModal()
             })
             .catch(err => {
-              this.setState({ loading: false })
+              this.setState({ loading: false, error: 'Whoops! Could not create post. Please try again!' })
               console.log('Error creating post', err) // eslint-disable-line no-console
             })
         })
@@ -151,13 +151,6 @@ class CreatePostModal extends Component {
             style={{ margin: 15 }}
           >
             <MyAppText>Create Post</MyAppText>
-          </Button>
-          <Button
-            type='warning'
-            onClick={() => this.props.closeModal()}
-            style={{ margin: 15 }}
-          >
-            <MyAppText>Close</MyAppText>
           </Button>
         </DismissKeyboardView>
       </Modal>
