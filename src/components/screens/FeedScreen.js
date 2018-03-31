@@ -8,7 +8,7 @@ import { Modal as PromptModal } from 'antd-mobile'
 import { MyAppText } from '../common'
 import PostsList from '../PostsList'
 import CreatePostModal from '../CreatePostModal'
-import query from '../../queries/allPosts'
+import fetchPrompt from '../../queries/fetchPrompt'
 
 const logout = navigation => {
   AsyncStorage.removeItem('token')
@@ -58,6 +58,21 @@ class FeedScreen extends Component {
   }
 
   render() {
+    const PromptSection = () => (
+      <View>
+        {this.props.data.Prompt ? (
+          <View>
+            <MyAppText style={{ textAlign: 'center', marginTop: 15, fontSize: 18 }}>
+              {this.props.data.Prompt.title}
+            </MyAppText>
+            <MyAppText style={{ fontFamily: 'ProximaNovaRegularIt', marginTop: 10 }}>
+              {this.props.data.Prompt.description}
+            </MyAppText>
+          </View>
+        ) : <MyAppText style={{ textAlign: 'center', fontSize: 18 }}>No prompt today!</MyAppText>}
+      </View>
+    )
+
     return (
       <View
         style={{
@@ -83,15 +98,13 @@ class FeedScreen extends Component {
         <PromptModal
           visible={this.state.promptModalVisibile}
           transparent
-          title={<MyAppText style={{ fontWeight: 'bold', fontSize: 20 }}>Today's Prompt</MyAppText>}
+          title={<MyAppText style={{ fontFamily: 'ProximaNovaBold', fontSize: 20 }}>Today's Prompt:</MyAppText>}
           footer={[{
-            text: 'Ok',
+            text: <MyAppText>Got it!</MyAppText>,
             onPress: () => this.setState({ promptModalVisibile: false })
           }]}
         >
-          <View>
-            <MyAppText style={{ textAlign: 'center', marginTop: 15 }}>Make something big look small</MyAppText>
-          </View>
+          <PromptSection />
         </PromptModal>
 
         <CreatePostModal
@@ -104,4 +117,9 @@ class FeedScreen extends Component {
   }
 }
 
-export default graphql(query)(FeedScreen)
+const today = new Date()
+today.setHours(0, 0, 0, 0)
+
+export default graphql(fetchPrompt, {
+  options: () => ({ variables: { promptLaunchDate: today.toISOString().slice(0, -1) } })
+})(FeedScreen)
