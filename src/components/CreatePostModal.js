@@ -5,7 +5,8 @@ import {
   Modal,
   Dimensions,
   AsyncStorage,
-  TouchableOpacity
+  TouchableOpacity,
+  Keyboard
 } from 'react-native'
 import { InputItem, Button } from 'antd-mobile'
 import { graphql } from 'react-apollo'
@@ -57,6 +58,7 @@ class CreatePostModal extends Component {
     if (this.state.caption === '') {
       this.setState({ error: 'Please add a caption.' })
     } else {
+      Keyboard.dismiss()
       this.setState({ loading: true })
       const formData = new FormData()
       const fileName = new Date().getTime().toString()
