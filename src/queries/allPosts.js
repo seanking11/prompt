@@ -1,15 +1,15 @@
 import gql from 'graphql-tag'
 
 export default gql`
-  query {
-    allPosts(orderBy: updatedAt_DESC) {
+  query($fetchAfterDate: DateTime!) {
+    allPosts(filter: {
+      createdAt_gte: $fetchAfterDate
+    }, orderBy: updatedAt_DESC) {
       caption
-      updatedAt
       file {
         url
       }
       user {
-        email
         firstName
         lastName
       }
