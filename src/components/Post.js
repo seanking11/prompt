@@ -26,16 +26,29 @@ const styles = {
     shadowRadius: 25,
     borderRadius: 10,
     elevation: 1,
-    margin: 15
+    margin: 15,
+    zIndex: 3
   },
   infoBox: {
     position: 'absolute',
     width: CALCULATED_WIDTH,
     height: 60,
     bottom: 0,
-    zIndex: 1,
+    zIndex: 5,
     padding: 15,
     flexDirection: 'row'
+  },
+  captionBox: {
+    position: 'absolute',
+    width: CALCULATED_WIDTH,
+    bottom: 0,
+    zIndex: -1,
+    padding: 15,
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    opacity: 0
   },
   userText: {
     color: '#fff',
@@ -60,25 +73,27 @@ const styles = {
 
 class Post extends Component {
   state = {
-    width: new Animated.Value(CALCULATED_WIDTH),
-    margin: new Animated.Value(15),
+    opacity: new Animated.Value(0),
+    bottom: new Animated.Value(0),
+    overflow: 'hidden',
     open: false
   }
 
   _onPostPress() {
     console.log('pressed')
-    this.setState({ open: !this.state.open })
+    const overflow = this.state.open ? 'hidden' : 'visible'
+    this.setState({ open: !this.state.open, overflow })
     Animated.spring(
-      this.state.width,
+      this.state.bottom,
       {
-        toValue: this.state.open ? DEVICE_WIDTH : CALCULATED_WIDTH,
+        toValue: this.state.open ? 0 : -60,
         duration: DURATION
       }
     ).start()
     Animated.spring(
-      this.state.margin,
+      this.state.opacity,
       {
-        toValue: this.state.open ? 0 : 15,
+        toValue: this.state.open ? 0 : 1,
         duration: DURATION
       }
     ).start()
@@ -89,7 +104,7 @@ class Post extends Component {
     return (
       <View style={{ flex: 1 }}>
         <TouchableWithoutFeedback onPressIn={() => this._onPostPress()}>
-          <Animated.View style={[styles.card, { width: this.state.width, margin: this.state.margin }]}>
+          <Animated.View style={[styles.card, { overflow: this.state.overflow }]}>
             <Image
               resizeMode='cover'
               style={styles.image}
@@ -110,6 +125,9 @@ class Post extends Component {
                 <Icon name='heart-o' size={25} color='#fff' />
               </View>
             </LinearGradient>
+            <Animated.View style={[styles.captionBox, { bottom: this.state.bottom, opacity: this.state.opacity }]}>
+              <MyAppText>{post.caption}</MyAppText>
+            </Animated.View>
           </Animated.View>
         </TouchableWithoutFeedback>
       </View>
