@@ -43,6 +43,9 @@ const styles = {
   }
 }
 
+const today = new Date()
+today.setHours(0, 0, 0, 0)
+
 class CreatePostModal extends Component {
   state = {
     caption: '',
@@ -99,7 +102,14 @@ class CreatePostModal extends Component {
             }
           }
 
-          this.props.mutate({ variables: vars, refetchQueries: [{ query }] })
+          this.props.mutate({
+            variables: vars,
+            refetchQueries: [{
+              query,
+              variables: { fetchAfterDate: today.toISOString().slice(0, -1) }
+            }]
+          })
+
             .then(() => {
               // Successfully created POST
               this.setState({ caption: '', loading: false })
