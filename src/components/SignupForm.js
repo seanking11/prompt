@@ -73,7 +73,7 @@ class LoginForm extends Component {
     this.props.createUser({ variables: input })
       .then(() => {
         this.setState({ loading: false })
-        this.props.toggleLoginState()
+        this.props.navigation.navigate('onboarding')
       })
       // .then(this.loginUser(email, password))
       .catch(err => {
