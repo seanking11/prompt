@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Animated } from 'react-native'
+import { View, Animated, AsyncStorage } from 'react-native'
 import { ImagePicker } from 'expo'
 import { Button } from 'antd-mobile'
 import { MyAppText, Avatar } from '../common'
@@ -34,18 +34,30 @@ const styles = {
 class OnboardingScreen extends Component {
   state = {
     uploadedImage: '',
-    userName: 'Sean King',
+    userName: '',
     firstViewOpacity: new Animated.Value(1),
-    secondViewOpacity: new Animated.Value(0)
+    secondViewOpacity: new Animated.Value(0),
+    firstZIndex: 5,
+    secondZIndex: 1
   }
 
   _handleUpload = () => {
+    AsyncStorage.getItem('userName').then(user => {
+      const obj = JSON.parse(user)
+      const { firstName, lastName } = obj.data.createUser
+      this.setState({ userName: `${firstName} ${lastName}` })
+    })
+
     ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [1, 1]
     }).then(uploadedImage => {
       if (!uploadedImage.cancelled) {
-        this.setState({ uploadedImage })
+        this.setState({
+          uploadedImage,
+          firstZIndex: 1,
+          secondZIndex: 5
+        })
 
         Animated.timing(
           this.state.firstViewOpacity,
@@ -67,13 +79,18 @@ class OnboardingScreen extends Component {
   }
 
   _handleGetStarted = () => {
-    this.props.navigation.navigate('main')
+    this.props.navigation.navigate('auth')
   }
 
   render() {
     return (
       <View style={styles.containerStyle}>
-        <Animated.View style={[styles.containerStyle, { opacity: this.state.firstViewOpacity, zIndex: 5 }]}>
+        <Animated.View style={[
+          styles.containerStyle, {
+            opacity: this.state.firstViewOpacity,
+            zIndex: this.state.firstZIndex
+          }]}
+        >
           <MyAppText style={styles.headerTextStyle}>Upload a mugshot</MyAppText>
           <Avatar
             size={200}
@@ -85,7 +102,12 @@ class OnboardingScreen extends Component {
           </Button>
         </Animated.View>
 
-        <Animated.View style={[styles.containerStyle, { opacity: this.state.secondViewOpacity, zIndex: 1 }]}>
+        <Animated.View style={[
+          styles.containerStyle, {
+            opacity: this.state.secondViewOpacity,
+            zIndex: this.state.secondZIndex
+          }]}
+        >
           <MyAppText style={styles.headerTextStyle}>Welcome</MyAppText>
           <Avatar
             size={200}
@@ -94,7 +116,7 @@ class OnboardingScreen extends Component {
           />
           <MyAppText style={styles.nameStyle}>{this.state.userName}</MyAppText>
           <Button type='primary' style={styles.buttonStyle}>
-            <MyAppText onPress={() => this._handleGetStarted()}>Get Started!</MyAppText>
+            <MyAppText onPress={() => this._handleGetStarted()}>Login</MyAppText>
           </Button>
         </Animated.View>
       </View>
