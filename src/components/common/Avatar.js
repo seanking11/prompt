@@ -4,6 +4,7 @@ import { Image } from 'react-native'
 const Avatar = ({
   borderColor,
   img,
+  imgPath,
   size = 50,
   style,
   ...rest
@@ -18,7 +19,7 @@ const Avatar = ({
         borderWidth: 2,
         borderColor: borderColor || 'transparent'
       }, style]}
-      source={image}
+      source={imgPath || image}
       {...rest}
     />
   )
