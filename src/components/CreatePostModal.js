@@ -54,7 +54,10 @@ class CreatePostModal extends Component {
   }
 
   componentWillMount() {
-    AsyncStorage.getItem('loggedInUserId').then(loggedInUserId => this.setState({ loggedInUserId }))
+    AsyncStorage.getItem('loggedInUser').then(loggedInUser => {
+      const obj = JSON.parse(loggedInUser)
+      this.setState({ loggedInUserId: obj.id })
+    }).catch(err => console.log(err)) // eslint-disable-line no-console
   }
 
   _onCreatePostButtonPress = (localUri) => {
