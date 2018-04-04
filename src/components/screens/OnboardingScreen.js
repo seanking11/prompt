@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { View, Animated, AsyncStorage } from 'react-native'
 import { ImagePicker } from 'expo'
+import { graphql } from 'react-apollo'
 import { Button } from 'antd-mobile'
 import { MyAppText, Avatar } from '../common'
+import uploadUserImageMutation from '../../mutations/uploadUserImage'
+import config from '../../config'
 
 const DURATION = 500
 
@@ -44,8 +47,8 @@ class OnboardingScreen extends Component {
   _handleUpload = () => {
     AsyncStorage.getItem('userName').then(user => {
       const obj = JSON.parse(user)
-      const { firstName, lastName } = obj.data.createUser
-      this.setState({ userName: `${firstName} ${lastName}` })
+      const { firstName, lastName, id } = obj.data.createUser
+      this.setState({ userName: `${firstName} ${lastName}`, userId: id })
     })
 
     ImagePicker.launchImageLibraryAsync({
@@ -53,6 +56,7 @@ class OnboardingScreen extends Component {
       aspect: [1, 1]
     }).then(uploadedImage => {
       if (!uploadedImage.cancelled) {
+        this._setProfileImage(uploadedImage.uri)
         this.setState({
           uploadedImage,
           firstZIndex: 1,
@@ -77,6 +81,56 @@ class OnboardingScreen extends Component {
       }
     })
   }
+
+  _setProfileImage = localUri => {
+    const formData = new FormData()
+    const fileName = new Date().getTime().toString()
+    const data = {
+      uri: localUri,
+      name: `${fileName}.jpg`,
+      type: 'image/jpeg'
+    }
+    formData.append('data', data)
+
+    const options = {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+
+    fetch(config.fileUrl, options)
+      .then(response => {
+        console.log(response) // eslint-disable-line no-console
+        return response.json()
+      })
+      .then(image => {
+        const vars = {
+          userUserId: this.state.userId,
+          fileFileId: image.id
+        }
+
+        this.props.mutate({
+          variables: vars
+        })
+
+          .then(() => {
+            // Successfully uploaded image
+            this.setState({ loading: false })
+          })
+          .catch(err => {
+            this.setState({ loading: false })
+            console.log('Error uploading image', err) // eslint-disable-line no-console
+          })
+      })
+      .catch(err => {
+        this.setState({ loading: false })
+        console.log('Error uploading image', err) // eslint-disable-line no-console
+      })
+  }
+
 
   _handleGetStarted = () => {
     this.props.navigation.navigate('auth')
@@ -124,4 +178,4 @@ class OnboardingScreen extends Component {
   }
 }
 
-export default OnboardingScreen
+export default graphql(uploadUserImageMutation)(OnboardingScreen)
