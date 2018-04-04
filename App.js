@@ -10,6 +10,7 @@ import reducers from './src/reducers'
 import client from './src/client'
 import {
   AuthScreen,
+  OnboardingScreen,
   ProfileScreen,
   FeedScreen
 } from './src/components/screens'
@@ -40,6 +41,7 @@ export default class App extends Component {
   render() {
     const MainNavigator = TabNavigator({ // eslint-disable-line
       auth: { screen: AuthScreen },
+      onboarding: { screen: OnboardingScreen },
       main: {
         screen: StackNavigator({ // eslint-disable-line new-cap
           feed: { screen: FeedScreen },

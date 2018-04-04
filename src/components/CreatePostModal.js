@@ -54,7 +54,10 @@ class CreatePostModal extends Component {
   }
 
   componentWillMount() {
-    AsyncStorage.getItem('loggedInUserId').then(loggedInUserId => this.setState({ loggedInUserId }))
+    AsyncStorage.getItem('loggedInUser').then(loggedInUser => {
+      const obj = JSON.parse(loggedInUser)
+      this.setState({ loggedInUserId: obj.id })
+    }).catch(err => console.log(err)) // eslint-disable-line no-console
   }
 
   _onCreatePostButtonPress = (localUri) => {
@@ -91,14 +94,12 @@ class CreatePostModal extends Component {
             uploadedImageId: image.id
           })
 
-          const tempUserId = 'cje3ieb6nd2my0196xe1wf2qj'
-
           const vars = {
             caption: this.state.caption,
             fileId: this.state.uploadedImageId,
             userId: this.state.loggedInUserId,
             file: {
-              name: `${this.state.uploadedImageId}-${tempUserId}`
+              name: `${this.state.uploadedImageId}-${this.state.loggedInUserId}`
             }
           }
 

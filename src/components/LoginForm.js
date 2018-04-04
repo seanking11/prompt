@@ -55,7 +55,7 @@ class LoginForm extends Component {
     this.props.mutate({ variables: input })
       .then(data => {
         AsyncStorage.setItem('token', data.data.signinUser.token)
-        AsyncStorage.setItem('loggedInUserId', data.data.signinUser.user.id)
+        AsyncStorage.setItem('loggedInUser', JSON.stringify(data.data.signinUser.user))
         this.props.navigation.navigate('main')
         this.setState({ loading: false })
         this.props.emailChanged('')

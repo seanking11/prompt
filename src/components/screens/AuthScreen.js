@@ -43,7 +43,7 @@ class AuthScreen extends Component {
       <DismissKeyboardView style={styles.containerStyle}>
         {this.state.showLogin ?
           <LoginForm navigation={this.props.navigation} /> :
-          <SignupForm toggleLoginState={this.onButtonPress} />
+          <SignupForm toggleLoginState={this.onButtonPress} navigation={this.props.navigation} />
         }
         <TouchableOpacity onPress={this.onButtonPress}>
           <MyAppText>{this.state.showLogin ? 'Create an account' : 'Already have an account?'}</MyAppText>
