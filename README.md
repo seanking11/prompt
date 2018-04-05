@@ -1,6 +1,16 @@
-# Promptr
+# Prompt
 
-Promptr is a mobile application written in React Native. Each day, find yourself with a new prompt to spark new creations. Whether it be drawing, photography, logo design, etc, share your interpretation of the prompt each day and see what other creators in the community are sharing too.
+Prompt is a mobile application written in React Native. Each day, find yourself with a new prompt to spark new creations. Whether it be drawing, photography, logo design, etc, share your interpretation of the prompt each day and see what other creators in the community are sharing too.
+
+## Features
+
+`Prompt` is still a work in progress, but currently has implemented:
+ - Account creation w/ onboarding
+ - Full authentication and log in capabilities
+ - Pull today's prompts from backend
+ - Display all posts from today
+ - Create posts
+ - Custom animated card modal - WIP
 
 ## Getting Started
 

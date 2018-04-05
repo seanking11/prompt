@@ -12,7 +12,7 @@ import fetchPrompt from '../../queries/fetchPrompt'
 
 const logout = navigation => {
   AsyncStorage.removeItem('token')
-  AsyncStorage.removeItem('loggedInUserId')
+  AsyncStorage.removeItem('loggedInUser')
   navigation.navigate('auth')
 }
 

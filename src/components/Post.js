@@ -115,7 +115,6 @@ class Post extends Component {
               <View style={styles.container}>
                 <Avatar
                   size={35}
-                  img='http://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png'
                   style={styles.avatar}
                 />
                 <View style={{ marginRight: 'auto' }}>

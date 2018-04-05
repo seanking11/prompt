@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Dimensions, Keyboard } from 'react-native'
+import { Dimensions, Keyboard, AsyncStorage } from 'react-native'
 import { Button, Card, InputItem, WhiteSpace } from 'antd-mobile'
 import { graphql, compose } from 'react-apollo'
 import InputItemStyle from 'antd-mobile/lib/input-item/style/index.native'
@@ -71,11 +71,14 @@ class LoginForm extends Component {
     Keyboard.dismiss()
     this.setState({ loading: true })
     this.props.createUser({ variables: input })
-      .then(() => {
+      .then(user => {
         this.setState({ loading: false })
-        this.props.toggleLoginState()
+        AsyncStorage.setItem('userName', JSON.stringify(user))
+          .then(() => {
+            this.props.toggleLoginState()
+            this.props.navigation.navigate('onboarding')
+          })
       })
-      // .then(this.loginUser(email, password))
       .catch(err => {
         console.log('Error creating user', err) // eslint-disable-line no-console
         this.setState({ loading: false })

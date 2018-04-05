@@ -8,6 +8,8 @@ export default gql`
         id
         createdAt
         email
+        firstName
+        lastName
       }
     }
   }
