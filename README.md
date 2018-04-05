@@ -10,6 +10,7 @@ Prompt is a mobile application written in React Native. Each day, find yourself 
  - Pull today's prompts from backend
  - Display all posts from today
  - Create posts
+ - Custom animated card modal - WIP
 
 ## Getting Started
 
