@@ -5,7 +5,7 @@ import { Button, Card, InputItem, WhiteSpace } from 'antd-mobile'
 import { graphql, compose } from 'react-apollo'
 import InputItemStyle from 'antd-mobile/lib/input-item/style/index.native'
 import { MyAppText } from './common'
-import { emailChanged, passwordChanged } from '../actions'
+import { emailChanged, passwordChanged, loginUserSuccess } from '../actions'
 import loginUserMutation from '../mutations/loginUser'
 
 const WIDTH = Dimensions.get('window').width
@@ -60,6 +60,7 @@ class LoginForm extends Component {
         this.setState({ loading: false })
         this.props.emailChanged('')
         this.props.passwordChanged('')
+        this.props.loginUserSuccess(data.data.signinUser.user)
       })
       .catch(err => {
         console.log('Error logging in', err) // eslint-disable-line no-console
@@ -130,5 +131,5 @@ const mapStateToProps = state => ({
 
 export default compose(
   graphql(loginUserMutation),
-  connect(mapStateToProps, { emailChanged, passwordChanged })
+  connect(mapStateToProps, { emailChanged, passwordChanged, loginUserSuccess })
 )(LoginForm)
