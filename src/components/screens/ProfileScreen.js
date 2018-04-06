@@ -26,6 +26,11 @@ const logout = navigation => {
 
 class ProfileScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
+    headerTitle: (
+      <MyAppText style={{ fontFamily: 'ProximaNovaBold', fontSize: 20 }}>
+        Your Profile
+      </MyAppText>
+    ),
     headerRight: (
       <TouchableOpacity onPress={() => logout(navigation)}>
         <Icon name='sign-out' color='#000' size={20} style={{ marginRight: 15, padding: 5 }} />
