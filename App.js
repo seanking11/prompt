@@ -6,6 +6,9 @@ import ReduxThunk from 'redux-thunk'
 import promiseMiddleware from 'redux-promise'
 import { ApolloProvider } from 'react-apollo'
 import { TabNavigator, StackNavigator } from 'react-navigation'
+import { persistStore, persistReducer } from 'redux-persist'
+import { PersistGate } from 'redux-persist/lib/integration/react'
+import storage from 'redux-persist/lib/storage'
 import reducers from './src/reducers'
 import client from './src/client'
 import {
@@ -18,11 +21,20 @@ import {
 // Log network requests
 GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest
 
+const persistConfig = {
+  key: 'root',
+  storage
+}
+
+const persistedReducer = persistReducer(persistConfig, reducers)
+
 const store = createStore(
-  reducers,
+  persistedReducer,
   {},
   applyMiddleware(ReduxThunk, promiseMiddleware)
 )
+
+const persistedStore = persistStore(store)
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class App extends Component {
@@ -62,9 +74,11 @@ export default class App extends Component {
 
     return (
       <Provider store={store}>
-        <ApolloProvider client={client}>
-          {this.state.fontLoaded ? <MainNavigator /> : <AppLoading />}
-        </ApolloProvider>
+        <PersistGate loading={null} persistor={persistedStore}>
+          <ApolloProvider client={client}>
+            {this.state.fontLoaded ? <MainNavigator /> : <AppLoading />}
+          </ApolloProvider>
+        </PersistGate>
       </Provider>
     )
   }
