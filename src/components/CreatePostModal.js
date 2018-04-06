@@ -89,9 +89,9 @@ class CreatePostModal extends Component {
           const vars = {
             caption: this.state.caption,
             fileId: this.state.uploadedImageId,
-            userId: this.state.user.id,
+            userId: this.props.user.id,
             file: {
-              name: `${this.state.uploadedImageId}-${this.state.user.id}`
+              name: `${this.state.uploadedImageId}-${this.props.user.id}`
             }
           }
 
