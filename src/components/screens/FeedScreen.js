@@ -27,7 +27,7 @@ class FeedScreen extends Component {
     const { params = {} } = navigation.state
     return {
       headerTitle: <HeaderTitle />,
-      headerLeft: <MyAppText onPress={() => logout(navigation)} style={{ marginLeft: 15 }}>Logout</MyAppText>,
+      headerLeft: <MyAppText onPress={() => navigation.navigate('profile')} style={{ marginLeft: 15 }}>Profile</MyAppText>,
       headerRight: (
         <TouchableOpacity onPress={() => params.savePhoto()}>
           <Icon name='plus' color='#000' size={20} style={{ marginRight: 15, padding: 5 }} />
