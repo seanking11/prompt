@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Dimensions, AsyncStorage, TouchableOpacity } from 'react-native'
+import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { MyAppText, Avatar } from '../common'
 
@@ -38,20 +39,22 @@ class ProfileScreen extends Component {
     )
   })
 
-  componentDidMount() {
-    console.log('Mounted. Props: ', this.props)
-  }
-
   render() {
     return (
       <View style={styles.containerStyles}>
         <Avatar
           size={100}
         />
-        <MyAppText style={styles.titleStyle}>Sean King</MyAppText>
+        {this.props.user && (
+          <MyAppText style={styles.titleStyle}>{this.props.user.firstName} {this.props.user.lastName}</MyAppText>
+        )}
       </View>
     )
   }
 }
 
-export default ProfileScreen
+const mapStateToProps = state => ({
+  user: state.auth.user
+})
+
+export default connect(mapStateToProps, null)(ProfileScreen)
