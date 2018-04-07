@@ -10,6 +10,9 @@ export default gql`
         email
         firstName
         lastName
+        file {
+          url
+        }
       }
     }
   }
