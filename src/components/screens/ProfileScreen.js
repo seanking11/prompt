@@ -15,6 +15,7 @@ const styles = {
   },
   titleStyle: {
     fontFamily: 'ProximaNovaBold',
+    textAlign: 'center',
     fontSize: 20
   }
 }
@@ -42,11 +43,14 @@ class ProfileScreen extends Component {
   render() {
     return (
       <View style={styles.containerStyles}>
-        <Avatar
-          size={100}
-        />
         {this.props.user && (
-          <MyAppText style={styles.titleStyle}>{this.props.user.firstName} {this.props.user.lastName}</MyAppText>
+          <View>
+            <Avatar
+              size={100}
+              img={this.props.user.file ? this.props.user.file.url : ''}
+            />
+            <MyAppText style={styles.titleStyle}>{this.props.user.firstName} {this.props.user.lastName}</MyAppText>
+          </View>
         )}
       </View>
     )
