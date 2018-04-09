@@ -49,11 +49,19 @@ class FeedScreen extends Component {
     promptModalVisibile: false
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.navigation.setParams({
       savePhoto: this.savePhoto,
-      userPicture: this.props.user.file.url
+      userPicture: this.props.user.file.url || ''
     })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.user.file.url !== this.props.user.file.url) {
+      this.props.navigation.setParams({
+        userPicture: nextProps.user.file.url || ''
+      })
+    }
   }
 
   savePhoto = () => {
