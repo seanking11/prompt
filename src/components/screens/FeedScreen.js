@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, StatusBar } from 'react-native'
+import { connect } from 'react-redux'
 import { ImagePicker } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 import FAB from 'react-native-fab'
 import { Modal as PromptModal } from 'antd-mobile'
-import { MyAppText } from '../common'
+import { MyAppText, Avatar } from '../common'
 import PostsList from '../PostsList'
 import CreatePostModal from '../CreatePostModal'
 import fetchPrompt from '../../queries/fetchPrompt'
@@ -22,9 +23,17 @@ class FeedScreen extends Component {
     return {
       headerTitle: <HeaderTitle />,
       headerLeft: (
-        <MyAppText onPress={() => navigation.navigate('profile')} style={{ marginLeft: 15 }}>
-          Profile
-        </MyAppText>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('profile')}
+        >
+          <Avatar
+            borderColor='#000'
+            borderWidth={1}
+            size={30}
+            img={params.userPicture}
+            style={{ marginLeft: 15 }}
+          />
+        </TouchableOpacity>
       ),
       headerRight: (
         <TouchableOpacity onPress={() => params.savePhoto()}>
@@ -41,7 +50,10 @@ class FeedScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({ savePhoto: this.savePhoto })
+    this.props.navigation.setParams({
+      savePhoto: this.savePhoto,
+      userPicture: this.props.user.file.url
+    })
   }
 
   savePhoto = () => {
@@ -118,6 +130,13 @@ class FeedScreen extends Component {
 const today = new Date()
 today.setHours(0, 0, 0, 0)
 
-export default graphql(fetchPrompt, {
-  options: () => ({ variables: { promptLaunchDate: today.toISOString().slice(0, -1) } })
-})(FeedScreen)
+const mapStateToProps = state => ({
+  user: state.auth.user
+})
+
+export default compose(
+  graphql(fetchPrompt, {
+    options: () => ({ variables: { promptLaunchDate: today.toISOString().slice(0, -1) } })
+  }),
+  connect(mapStateToProps, null)
+)(FeedScreen)
