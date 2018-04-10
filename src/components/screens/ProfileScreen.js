@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
-import { View, Dimensions, AsyncStorage, TouchableOpacity } from 'react-native'
+import { View, Dimensions, AsyncStorage, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { ImagePicker } from 'expo'
+import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import uploadUserImageMutation from '../../mutations/uploadUserImage'
 import { MyAppText, Avatar } from '../common'
+import config from '../../config'
 
 const { width } = Dimensions.get('window')
 
@@ -40,15 +44,83 @@ class ProfileScreen extends Component {
     )
   })
 
+  state = {
+    loading: false
+  }
+
+  _handleOnPress = () => {
+    ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [1, 1]
+    }).then(uploadedImage => {
+      if (!uploadedImage.cancelled) {
+        this._setProfileImage(uploadedImage.uri)
+        this.setState({ loading: true })
+      }
+    })
+  }
+
+  _setProfileImage = localUri => {
+    const formData = new FormData()
+    const fileName = new Date().getTime().toString()
+    const data = {
+      uri: localUri,
+      name: `${fileName}.jpg`,
+      type: 'image/jpeg'
+    }
+    formData.append('data', data)
+
+    const options = {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+
+    fetch(config.fileUrl, options)
+      .then(response => {
+        console.log(response) // eslint-disable-line no-console
+        return response.json()
+      })
+      .then(image => {
+        const vars = {
+          userUserId: this.props.user.id,
+          fileFileId: image.id
+        }
+
+        this.props.mutate({
+          variables: vars
+        })
+          .then(() => {
+            // Successfully uploaded image
+            this.setState({ loading: false })
+          })
+          .catch(err => {
+            this.setState({ loading: false })
+            console.log('Error uploading image', err) // eslint-disable-line no-console
+          })
+      })
+      .catch(err => {
+        this.setState({ loading: false })
+        console.log('Error uploading image', err) // eslint-disable-line no-console
+      })
+  }
+
   render() {
     return (
       <View style={styles.containerStyles}>
         {this.props.user && (
           <View>
-            <Avatar
-              size={100}
-              img={this.props.user.file ? this.props.user.file.url : ''}
-            />
+            {!this.state.loading ? (
+              <TouchableOpacity onPress={this._handleOnPress}>
+                <Avatar
+                  size={100}
+                  img={this.props.user.file ? this.props.user.file.url : ''}
+                />
+              </TouchableOpacity>
+            ) : <ActivityIndicator animating />}
             <MyAppText style={styles.titleStyle}>{this.props.user.firstName} {this.props.user.lastName}</MyAppText>
           </View>
         )}
@@ -61,4 +133,7 @@ const mapStateToProps = state => ({
   user: state.auth.user
 })
 
-export default connect(mapStateToProps, null)(ProfileScreen)
+export default compose(
+  graphql(uploadUserImageMutation),
+  connect(mapStateToProps, null)
+)(ProfileScreen)
