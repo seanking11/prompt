@@ -66,7 +66,6 @@ class Post extends Component {
   }
 
   _onPostPress() {
-    console.log('pressed')
     this.setState({ open: !this.state.open })
     Animated.spring(
       this.state.width,
@@ -101,6 +100,7 @@ class Post extends Component {
                 <Avatar
                   size={35}
                   style={styles.avatar}
+                  img={post.user.file.url}
                 />
                 <View style={{ marginRight: 'auto' }}>
                   <MyAppText style={styles.userText}>{`${post.user.firstName} ${post.user.lastName}`}</MyAppText>
