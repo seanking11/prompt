@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Image, Dimensions, Animated, TouchableWithoutFeedback } from 'react-native'
 import { LinearGradient } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import LikeButton from './LikeButton'
 import { Avatar, MyAppText } from './common'
 
 const DEVICE_WIDTH = Dimensions.get('window').width
@@ -106,7 +107,7 @@ class Post extends Component {
                   <MyAppText style={styles.userText}>{`${post.user.firstName} ${post.user.lastName}`}</MyAppText>
                   <MyAppText style={styles.likesText}>{post.caption}</MyAppText>
                 </View>
-                <Icon name='heart-o' size={25} color='#fff' />
+                <LikeButton />
               </View>
             </LinearGradient>
           </Animated.View>
