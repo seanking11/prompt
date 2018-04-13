@@ -89,7 +89,12 @@ class Post extends Component {
     return (
       <View style={{ flex: 1 }}>
         <TouchableWithoutFeedback onPressIn={() => this._onPostPress()}>
-          <Animated.View style={[styles.card, { width: this.state.width, margin: this.state.margin }]}>
+          <Animated.View style={[
+              styles.card,
+              this.props.cardStyles,
+              { width: this.state.width, margin: this.state.margin }
+            ]}
+          >
             <Image
               resizeMode='cover'
               style={styles.image}
