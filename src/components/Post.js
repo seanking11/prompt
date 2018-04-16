@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Image, Dimensions, Animated, TouchableWithoutFeedback } from 'react-native'
 import { LinearGradient } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import LikeButton from './LikeButton'
 import { Avatar, MyAppText } from './common'
 
 const DEVICE_WIDTH = Dimensions.get('window').width
@@ -80,9 +81,8 @@ class Post extends Component {
   }
 
   _onPostPress() {
-    console.log('pressed')
-    const overflow = this.state.open ? 'hidden' : 'visible'
     this.setState({ open: !this.state.open, overflow })
+    const overflow = this.state.open ? 'hidden' : 'visible'
     Animated.spring(
       this.state.bottom,
       {
@@ -116,12 +116,13 @@ class Post extends Component {
                 <Avatar
                   size={35}
                   style={styles.avatar}
+                  img={post.user.file.url}
                 />
                 <View style={{ marginRight: 'auto' }}>
                   <MyAppText style={styles.userText}>{`${post.user.firstName} ${post.user.lastName}`}</MyAppText>
                   <MyAppText style={styles.likesText}>{post.caption}</MyAppText>
                 </View>
-                <Icon name='heart-o' size={25} color='#fff' />
+                <LikeButton />
               </View>
             </LinearGradient>
             <Animated.View style={[styles.captionBox, { bottom: this.state.bottom, opacity: this.state.opacity }]}>

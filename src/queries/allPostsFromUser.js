@@ -1,19 +1,24 @@
 import gql from 'graphql-tag'
 
 export default gql`
-  mutation signinUserQuery($email: AUTH_PROVIDER_EMAIL) {
-    signinUser(email: $email) {
-      token
+  query($userId: ID!) {
+    allPosts(filter: {
+      user: {
+        id: $userId
+      }
+    }) {
+      caption
+      prompt {
+        title
+      }
       user {
-        id
-        createdAt
-        email
         firstName
         lastName
         file {
           url
         }
       }
+
     }
   }
 `

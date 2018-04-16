@@ -4,12 +4,12 @@ import {
   Image,
   Modal,
   Dimensions,
-  AsyncStorage,
   TouchableOpacity,
   Keyboard
 } from 'react-native'
+import { connect } from 'react-redux'
 import { InputItem, Button } from 'antd-mobile'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import InputItemStyle from 'antd-mobile/lib/input-item/style/index.native'
 import createPostMutation from '../mutations/createPost'
@@ -49,15 +49,7 @@ today.setHours(0, 0, 0, 0)
 class CreatePostModal extends Component {
   state = {
     caption: '',
-    loggedInUserId: '',
     loading: false
-  }
-
-  componentWillMount() {
-    AsyncStorage.getItem('loggedInUser').then(loggedInUser => {
-      const obj = JSON.parse(loggedInUser)
-      this.setState({ loggedInUserId: obj.id })
-    }).catch(err => console.log(err)) // eslint-disable-line no-console
   }
 
   _onCreatePostButtonPress = (localUri) => {
@@ -97,9 +89,9 @@ class CreatePostModal extends Component {
           const vars = {
             caption: this.state.caption,
             fileId: this.state.uploadedImageId,
-            userId: this.state.loggedInUserId,
+            userId: this.props.user.id,
             file: {
-              name: `${this.state.uploadedImageId}-${this.state.loggedInUserId}`
+              name: `${this.state.uploadedImageId}-${this.props.user.id}`
             }
           }
 
@@ -169,4 +161,11 @@ class CreatePostModal extends Component {
   }
 }
 
-export default graphql(createPostMutation)(CreatePostModal)
+const mapStateToProps = state => ({
+  user: state.auth.user
+})
+
+export default compose(
+  graphql(createPostMutation),
+  connect(mapStateToProps, null)
+)(CreatePostModal)

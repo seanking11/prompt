@@ -1,20 +1,15 @@
 import React, { Component } from 'react'
-import { View, AsyncStorage, TouchableOpacity, StatusBar } from 'react-native'
+import { View, TouchableOpacity, StatusBar } from 'react-native'
+import { connect } from 'react-redux'
 import { ImagePicker } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 import FAB from 'react-native-fab'
 import { Modal as PromptModal } from 'antd-mobile'
-import { MyAppText } from '../common'
+import { MyAppText, Avatar } from '../common'
 import PostsList from '../PostsList'
 import CreatePostModal from '../CreatePostModal'
 import fetchPrompt from '../../queries/fetchPrompt'
-
-const logout = navigation => {
-  AsyncStorage.removeItem('token')
-  AsyncStorage.removeItem('loggedInUser')
-  navigation.navigate('auth')
-}
 
 const HeaderTitle = () => (
   <MyAppText style={{ fontFamily: 'ProximaNovaBold', fontSize: 20 }}>
@@ -27,7 +22,19 @@ class FeedScreen extends Component {
     const { params = {} } = navigation.state
     return {
       headerTitle: <HeaderTitle />,
-      headerLeft: <MyAppText onPress={() => logout(navigation)} style={{ marginLeft: 15 }}>Logout</MyAppText>,
+      headerLeft: (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('profile')}
+        >
+          <Avatar
+            borderColor='#000'
+            borderWidth={1}
+            size={30}
+            img={params.userPicture}
+            style={{ marginLeft: 15 }}
+          />
+        </TouchableOpacity>
+      ),
       headerRight: (
         <TouchableOpacity onPress={() => params.savePhoto()}>
           <Icon name='plus' color='#000' size={20} style={{ marginRight: 15, padding: 5 }} />
@@ -42,8 +49,19 @@ class FeedScreen extends Component {
     promptModalVisibile: false
   }
 
-  componentDidMount() {
-    this.props.navigation.setParams({ savePhoto: this.savePhoto })
+  componentWillMount() {
+    this.props.navigation.setParams({
+      savePhoto: this.savePhoto,
+      userPicture: this.props.user.file.url || ''
+    })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.user.file.url !== this.props.user.file.url) {
+      this.props.navigation.setParams({
+        userPicture: nextProps.user.file.url || ''
+      })
+    }
   }
 
   savePhoto = () => {
@@ -120,6 +138,13 @@ class FeedScreen extends Component {
 const today = new Date()
 today.setHours(0, 0, 0, 0)
 
-export default graphql(fetchPrompt, {
-  options: () => ({ variables: { promptLaunchDate: today.toISOString().slice(0, -1) } })
-})(FeedScreen)
+const mapStateToProps = state => ({
+  user: state.auth.user
+})
+
+export default compose(
+  graphql(fetchPrompt, {
+    options: () => ({ variables: { promptLaunchDate: today.toISOString().slice(0, -1) } })
+  }),
+  connect(mapStateToProps, null)
+)(FeedScreen)

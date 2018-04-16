@@ -21,14 +21,10 @@ const loginUserFail = (dispatch, error) => {
   dispatch({ type: LOGIN_USER_FAIL, error })
 }
 
-const loginUserSuccess = (dispatch, user) => {
-  dispatch({
-    type: LOGIN_USER_SUCCESS,
-    user
-  })
-
-  // Navigate user
-}
+export const loginUserSuccess = user => ({
+  type: LOGIN_USER_SUCCESS,
+  user
+})
 
 export const loginUser = ({ email, password }) => (dispatch) => {
   dispatch({ type: LOGIN_USER })
