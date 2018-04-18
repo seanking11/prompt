@@ -81,7 +81,7 @@ class LoginForm extends Component {
       })
       .catch(err => {
         console.log('Error creating user', err) // eslint-disable-line no-console
-        this.setState({ loading: false })
+        this.setState({ loading: false, error: err.toString(), triedLoggingIn: true })
       })
   }
 
@@ -128,7 +128,10 @@ class LoginForm extends Component {
             placeholder='Email'
             onChange={email => this.setState({ email })}
             value={this.state.email}
-            error={this.state.email === '' && this.state.triedLoggingIn}
+            error={
+              this.state.triedLoggingIn &&
+              (this.state.password === '' || this.state.error.toLowerCase().indexOf('user') >= 0)
+            }
           />
 
           <WhiteSpace />
@@ -139,6 +142,7 @@ class LoginForm extends Component {
             onChange={password => this.setState({ password })}
             value={this.state.password}
             error={this.state.password === '' && this.state.triedLoggingIn}
+
           />
 
           <MyAppText style={styles.error}>
