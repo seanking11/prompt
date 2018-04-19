@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import { View, Image, Dimensions, Animated, TouchableWithoutFeedback } from 'react-native'
+import { View, Image, Dimensions } from 'react-native'
 import { LinearGradient } from 'expo'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import FlipCard from 'react-native-flip-card'
 import LikeButton from './LikeButton'
 import { Avatar, MyAppText } from './common'
 
 const DEVICE_WIDTH = Dimensions.get('window').width
 const CALCULATED_WIDTH = DEVICE_WIDTH - 30
-const DURATION = 500
 
 const styles = {
   image: {
@@ -21,14 +20,21 @@ const styles = {
     height: 325,
     position: 'relative',
     overflow: 'hidden',
+    borderRadius: 10,
+    margin: 15,
+    zIndex: 3
+  },
+  cardBack: {
+    backgroundColor: '#fff',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  shadow: {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.2,
-    shadowRadius: 25,
-    borderRadius: 10,
-    elevation: 1,
-    margin: 15,
-    zIndex: 3
+    shadowRadius: 25
   },
   infoBox: {
     position: 'absolute',
@@ -72,65 +78,47 @@ const styles = {
   }
 }
 
-class Post extends Component {
-  state = {
-    opacity: new Animated.Value(0),
-    bottom: new Animated.Value(0),
-    overflow: 'hidden',
-    open: false
-  }
-
-  _onPostPress() {
-    this.setState({ open: !this.state.open, overflow })
-    const overflow = this.state.open ? 'hidden' : 'visible'
-    Animated.spring(
-      this.state.bottom,
-      {
-        toValue: this.state.open ? 0 : -60,
-        duration: DURATION
-      }
-    ).start()
-    Animated.spring(
-      this.state.opacity,
-      {
-        toValue: this.state.open ? 0 : 1,
-        duration: DURATION
-      }
-    ).start()
-  }
-
+class Post extends Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { post } = this.props
     return (
-      <View style={{ flex: 1 }}>
-        <TouchableWithoutFeedback onPressIn={() => this._onPostPress()}>
-          <Animated.View style={[styles.card, { overflow: this.state.overflow }]}>
-            <Image
-              resizeMode='cover'
-              style={styles.image}
-              source={{ uri: post.file.url }}
-            />
+      <FlipCard
+        style={{ borderWidth: 0 }}
+        friction={20}
+        // perspective={1000}
+        flipHorizontal
+        flipVertical={false}
+        clickable
+        alignHeight
+        alignWidth
+      >
+        <View style={styles.card}>
+          <Image
+            resizeMode='cover'
+            style={styles.image}
+            source={{ uri: post.file.url }}
+          />
 
-            <LinearGradient colors={['transparent', '#181818']} style={styles.infoBox}>
-              <View style={styles.container}>
-                <Avatar
-                  size={35}
-                  style={styles.avatar}
-                  img={post.user.file.url}
-                />
-                <View style={{ marginRight: 'auto' }}>
-                  <MyAppText style={styles.userText}>{`${post.user.firstName} ${post.user.lastName}`}</MyAppText>
-                  <MyAppText style={styles.likesText}>{post.caption}</MyAppText>
-                </View>
-                <LikeButton />
+          <LinearGradient colors={['transparent', '#181818']} style={styles.infoBox}>
+            <View style={styles.container}>
+              <Avatar
+                size={35}
+                style={styles.avatar}
+                img={post.user.file.url}
+              />
+              <View style={{ marginRight: 'auto' }}>
+                <MyAppText style={styles.userText}>{`${post.user.firstName} ${post.user.lastName}`}</MyAppText>
+                <MyAppText style={styles.likesText}>0 Likes</MyAppText>
               </View>
-            </LinearGradient>
-            <Animated.View style={[styles.captionBox, { bottom: this.state.bottom, opacity: this.state.opacity }]}>
-              <MyAppText>{post.caption}</MyAppText>
-            </Animated.View>
-          </Animated.View>
-        </TouchableWithoutFeedback>
-      </View>
+              <LikeButton />
+            </View>
+          </LinearGradient>
+        </View>
+
+        <View style={[styles.card, styles.cardBack, styles.shadow]}>
+          <MyAppText style={{ fontSize: 16, fontFamily: 'ProximaNovaBold' }}>{post.caption}</MyAppText>
+        </View>
+      </FlipCard>
     )
   }
 }
