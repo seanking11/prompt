@@ -83,7 +83,7 @@ class FeedScreen extends Component {
             <MyAppText style={{ textAlign: 'center', marginTop: 15, fontSize: 18 }}>
               {this.props.data.Prompt.title}
             </MyAppText>
-            <MyAppText style={{ fontFamily: 'ProximaNovaRegularIt', marginTop: 10 }}>
+            <MyAppText style={{ textAlign: 'center', fontFamily: 'ProximaNovaRegularIt', marginTop: 10 }}>
               {this.props.data.Prompt.description}
             </MyAppText>
           </View>
