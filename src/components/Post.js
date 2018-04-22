@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { View, Image, Dimensions } from 'react-native'
+import { View, Image, Dimensions, Text } from 'react-native'
 import { LinearGradient } from 'expo'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import FlipCard from 'react-native-flip-card'
 import LikeButton from './LikeButton'
 import { Avatar, MyAppText } from './common'
@@ -27,8 +28,8 @@ const styles = {
   cardBack: {
     backgroundColor: '#fff',
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: 15
   },
   shadow: {
     shadowColor: '#000',
@@ -75,6 +76,11 @@ const styles = {
     justifyContent: 'space-between',
     flexDirection: 'row',
     flex: 1
+  },
+  quote: {
+    position: 'absolute',
+    top: -10,
+    left: -10
   }
 }
 
@@ -85,7 +91,7 @@ class Post extends Component { // eslint-disable-line react/prefer-stateless-fun
       <FlipCard
         style={{ borderWidth: 0 }}
         friction={20}
-        // perspective={1000}
+        // perspective={2000}
         flipHorizontal
         flipVertical={false}
         clickable
@@ -116,7 +122,17 @@ class Post extends Component { // eslint-disable-line react/prefer-stateless-fun
         </View>
 
         <View style={[styles.card, styles.cardBack, styles.shadow]}>
-          <MyAppText style={{ fontSize: 16, fontFamily: 'ProximaNovaBold' }}>{post.caption}</MyAppText>
+          <Icon name='quote-left' color='#F4F2F2' size={100} style={styles.quote} />
+          <View
+            style={{
+              borderBottomWidth: 1,
+              borderColor: '#000',
+              marginBottom: 10
+            }}
+          >
+            <MyAppText style={{ fontSize: 24, fontFamily: 'ProximaNovaBold' }}>The Backstory</MyAppText>
+          </View>
+          <MyAppText style={{ fontSize: 16 }}>{post.caption}</MyAppText>
         </View>
       </FlipCard>
     )
