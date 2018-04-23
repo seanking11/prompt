@@ -29,6 +29,7 @@ const styles = {
     backgroundColor: '#fff',
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 15
   },
   shadow: {
@@ -77,10 +78,15 @@ const styles = {
     flexDirection: 'row',
     flex: 1
   },
-  quote: {
+  quoteLeft: {
     position: 'absolute',
     top: -10,
     left: -10
+  },
+  quoteRight: {
+    position: 'absolute',
+    bottom: -20,
+    right: -10
   }
 }
 
@@ -91,7 +97,6 @@ class Post extends Component { // eslint-disable-line react/prefer-stateless-fun
       <FlipCard
         style={{ borderWidth: 0 }}
         friction={20}
-        // perspective={2000}
         flipHorizontal
         flipVertical={false}
         clickable
@@ -122,17 +127,9 @@ class Post extends Component { // eslint-disable-line react/prefer-stateless-fun
         </View>
 
         <View style={[styles.card, styles.cardBack, styles.shadow]}>
-          <Icon name='quote-left' color='#F4F2F2' size={100} style={styles.quote} />
-          <View
-            style={{
-              borderBottomWidth: 1,
-              borderColor: '#000',
-              marginBottom: 10
-            }}
-          >
-            <MyAppText style={{ fontSize: 24, fontFamily: 'ProximaNovaBold' }}>The Backstory</MyAppText>
-          </View>
-          <MyAppText style={{ fontSize: 16 }}>{post.caption}</MyAppText>
+          <Icon name='quote-left' color='#F4F2F2' size={100} style={styles.quoteLeft} />
+          <Icon name='quote-right' color='#F4F2F2' size={100} style={styles.quoteRight} />
+          <MyAppText style={{ fontSize: 18 }}>{post.caption}</MyAppText>
         </View>
       </FlipCard>
     )
