@@ -5,7 +5,14 @@ export default gql`
     allPosts(filter: {
       createdAt_gte: $fetchAfterDate
     }, orderBy: updatedAt_DESC) {
+      id
       caption
+      likes {
+        id
+        user {
+          id
+        }
+      }
       file {
         url
       }
