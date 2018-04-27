@@ -8,6 +8,12 @@ export default gql`
       }
     }) {
       caption
+      likes {
+        id
+        user {
+          id
+        }
+      }
       prompt {
         title
       }
