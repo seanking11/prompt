@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { View, Image, Dimensions, Text } from 'react-native'
+import { View, Image, Dimensions } from 'react-native'
 import { LinearGradient } from 'expo'
+import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import FlipCard from 'react-native-flip-card'
 import LikeButton from './LikeButton'
@@ -90,9 +91,32 @@ const styles = {
   }
 }
 
-class Post extends Component { // eslint-disable-line react/prefer-stateless-function
+class Post extends Component {
+  state = {
+    likesAmount: this.props.post.likes.length
+  }
+
+  _handleOnLike = () => {
+    this.setState({ likesAmount: this.state.likesAmount += 1 })
+  }
+
+  _handleUnLike = () => {
+    this.setState({ likesAmount: this.state.likesAmount -= 1 })
+  }
+
+  _findLikeIdByUser = () => {
+    const likeByUser = this.props.post.likes.find(like => like.user.id === this.props.user.id)
+    if (likeByUser) {
+      return likeByUser.id
+    }
+    return null
+  }
+
   render() {
     const { post } = this.props
+    const likesText = this.state.likesAmount === 1
+      ? `${this.state.likesAmount} Like`
+      : `${this.state.likesAmount} Likes`
     return (
       <FlipCard
         style={{ borderWidth: 0 }}
@@ -119,9 +143,14 @@ class Post extends Component { // eslint-disable-line react/prefer-stateless-fun
               />
               <View style={{ marginRight: 'auto' }}>
                 <MyAppText style={styles.userText}>{`${post.user.firstName} ${post.user.lastName}`}</MyAppText>
-                <MyAppText style={styles.likesText}>0 Likes</MyAppText>
+                <MyAppText style={styles.likesText}>{likesText}</MyAppText>
               </View>
-              <LikeButton />
+              <LikeButton
+                postId={post.id}
+                likeId={this._findLikeIdByUser()}
+                handleOnLike={this._handleOnLike}
+                handleUnLike={this._handleUnLike}
+              />
             </View>
           </LinearGradient>
         </View>
@@ -136,4 +165,8 @@ class Post extends Component { // eslint-disable-line react/prefer-stateless-fun
   }
 }
 
-export default Post
+const mapStateToProps = state => ({
+  user: state.auth.user
+})
+
+export default connect(mapStateToProps, null)(Post)
