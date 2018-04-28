@@ -57,10 +57,12 @@ class FeedScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user.file.url !== this.props.user.file.url) {
-      this.props.navigation.setParams({
-        userPicture: nextProps.user.file.url || ''
-      })
+    if (nextProps.user && this.props.user) {
+      if (nextProps.user.file.url !== this.props.user.file.url) {
+        this.props.navigation.setParams({
+          userPicture: nextProps.user.file.url || ''
+        })
+      }
     }
   }
 
