@@ -9,7 +9,11 @@ import {
 const initialState = {
   email: '',
   password: '',
-  user: null,
+  user: {
+    file: {
+      url: ''
+    }
+  },
   error: '',
   loading: false
 }

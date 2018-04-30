@@ -50,9 +50,13 @@ class FeedScreen extends Component {
   }
 
   componentWillMount() {
+    let userPicture = ''
+    if (this.props.user) {
+      userPicture = this.props.user.file.url
+    }
     this.props.navigation.setParams({
       savePhoto: this.savePhoto,
-      userPicture: this.props.user.file.url || ''
+      userPicture
     })
   }
 
