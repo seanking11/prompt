@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, StatusBar } from 'react-native'
 import { connect } from 'react-redux'
-import { ImagePicker } from 'expo'
+import { ImagePicker, Permissions } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { graphql, compose } from 'react-apollo'
 import FAB from 'react-native-fab'
@@ -70,15 +70,26 @@ class FeedScreen extends Component {
     }
   }
 
-  savePhoto = () => {
-    ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [1, 1]
-    }).then(newPostImage => {
-      if (!newPostImage.cancelled) {
-        this.setState({ newPostImage, createPostModalVisible: true })
-      }
-    })
+  askPermissionsAsync = async () => (
+    Promise.all([
+      Permissions.askAsync(Permissions.CAMERA),
+      Permissions.askAsync(Permissions.CAMERA_ROLL)
+    ])
+  )
+
+  savePhoto = async () => {
+    const results = await this.askPermissionsAsync()
+    if (results.some(({ status }) => status === 'granted')) {
+      await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [1, 1]
+      }).then(newPostImage => {
+        if (!newPostImage.cancelled) {
+          this.setState({ newPostImage, createPostModalVisible: true })
+        }
+      })
+      .catch(err => console.log(err))
+    }
   }
 
   render() {
