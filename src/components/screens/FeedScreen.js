@@ -87,8 +87,7 @@ class FeedScreen extends Component {
         if (!newPostImage.cancelled) {
           this.setState({ newPostImage, createPostModalVisible: true })
         }
-      })
-      .catch(err => console.log(err))
+      }).catch(err => console.log(err)) // eslint-disable-line no-console
     }
   }
 

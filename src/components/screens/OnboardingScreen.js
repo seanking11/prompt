@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Animated, AsyncStorage } from 'react-native'
-import { ImagePicker } from 'expo'
+import { ImagePicker, Permissions } from 'expo'
 import { graphql } from 'react-apollo'
 import { Button } from 'antd-mobile'
 import { MyAppText, Avatar } from '../common'
@@ -44,42 +44,53 @@ class OnboardingScreen extends Component {
     secondZIndex: 1
   }
 
-  _handleUpload = () => {
+  _askPermissionsAsync = async () => (
+    Promise.all([
+      Permissions.askAsync(Permissions.CAMERA),
+      Permissions.askAsync(Permissions.CAMERA_ROLL)
+    ])
+  )
+
+  _handleUpload = async () => {
     AsyncStorage.getItem('userName').then(user => {
       const obj = JSON.parse(user)
       const { firstName, lastName, id } = obj.data.createUser
       this.setState({ userName: `${firstName} ${lastName}`, userId: id })
     })
 
-    ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [1, 1]
-    }).then(uploadedImage => {
-      if (!uploadedImage.cancelled) {
-        this._setProfileImage(uploadedImage.uri)
-        this.setState({
-          uploadedImage,
-          firstZIndex: 1,
-          secondZIndex: 5
-        })
+    const results = await this._askPermissionsAsync()
 
-        Animated.timing(
-          this.state.firstViewOpacity,
-          {
-            toValue: 0,
-            duration: DURATION
-          }
-        ).start(() => {
+    if (results.some(({ status }) => status === 'granted')) {
+      ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [1, 1]
+      }).then(uploadedImage => {
+        if (!uploadedImage.cancelled) {
+          this._setProfileImage(uploadedImage.uri)
+          this.setState({
+            uploadedImage,
+            firstZIndex: 1,
+            secondZIndex: 5
+          })
+
           Animated.timing(
-            this.state.secondViewOpacity,
+            this.state.firstViewOpacity,
             {
-              toValue: 1,
+              toValue: 0,
               duration: DURATION
             }
-          ).start()
-        })
-      }
-    })
+          ).start(() => {
+            Animated.timing(
+              this.state.secondViewOpacity,
+              {
+                toValue: 1,
+                duration: DURATION
+              }
+            ).start()
+          })
+        }
+      })
+    }
   }
 
   _setProfileImage = localUri => {
@@ -115,18 +126,14 @@ class OnboardingScreen extends Component {
         this.props.mutate({
           variables: vars
         })
-
           .then(() => {
             // Successfully uploaded image
-            this.setState({ loading: false })
           })
           .catch(err => {
-            this.setState({ loading: false })
             console.log('Error uploading image', err) // eslint-disable-line no-console
           })
       })
       .catch(err => {
-        this.setState({ loading: false })
         console.log('Error uploading image', err) // eslint-disable-line no-console
       })
   }
