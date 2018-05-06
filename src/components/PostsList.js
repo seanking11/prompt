@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, ActivityIndicator, View } from 'react-native'
+import { ScrollView, ActivityIndicator, View, RefreshControl } from 'react-native'
 import { graphql } from 'react-apollo'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { MyAppText } from './common'
@@ -7,6 +7,16 @@ import Post from './Post'
 import allPostsQuery from '../queries/allPosts'
 
 class PostsList extends Component {
+  state = {
+    refreshing: false
+  }
+
+  _refresh = () => {
+    this.setState({ refreshing: true })
+    this.props.data.refetch()
+      .then(() => this.setState({ refreshing: false }))
+  }
+
   _renderPosts = () => {
     if (this.props.data.allPosts) {
       if (this.props.data.allPosts.length === 0) {
@@ -21,7 +31,14 @@ class PostsList extends Component {
       }
 
       return (
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._refresh}
+            />
+          }
+        >
           {this.props.data.allPosts.map(post => (
             <Post
               key={post.caption}
