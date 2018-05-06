@@ -15,12 +15,15 @@ export default gql`
         }
       }
       prompt {
+        id
         title
       }
       user {
+        id
         firstName
         lastName
         file {
+          id
           url
         }
       }

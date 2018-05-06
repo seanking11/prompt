@@ -14,9 +14,11 @@ export default gql`
         }
       }
       file {
+        id
         url
       }
       user {
+        id
         firstName
         lastName
         file {
