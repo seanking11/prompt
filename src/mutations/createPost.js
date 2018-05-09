@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export default gql`
-  mutation createPostMutation($caption: String!, $fileId: ID!, $userId: ID!) {
-    createPost(caption: $caption, fileId: $fileId, userId: $userId) {
+  mutation createPostMutation($caption: String!, $fileId: ID!, $userId: ID!, $promptId: ID!) {
+    createPost(caption: $caption, fileId: $fileId, userId: $userId, promptId: $promptId) {
       id
       caption
       file {
