@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Dimensions, Keyboard, AsyncStorage } from 'react-native'
+import { Dimensions, Keyboard, AsyncStorage, KeyboardAvoidingView } from 'react-native'
 import { Button, Card, InputItem, WhiteSpace } from 'antd-mobile'
 import { graphql, compose } from 'react-apollo'
 import InputItemStyle from 'antd-mobile/lib/input-item/style/index.native'
@@ -95,70 +95,72 @@ class LoginForm extends Component {
     }
 
     return (
-      <Card style={{ width: WIDTH - MARGIN, margin: MARGIN }}>
-        <Card.Header
-          title={<MyAppText style={{ fontSize: 20, fontFamily: 'ProximaNovaBold' }}>Signup</MyAppText>}
-        />
-
-        <Card.Body>
-          <InputItem
-            type='text'
-            placeholder='First Name'
-            onChange={firstName => this.setState({ firstName })}
-            value={this.state.firstName}
-            error={this.state.firstName === '' && this.state.triedLoggingIn}
-            styles={inputStyles}
+      <KeyboardAvoidingView enabled behavior='padding'>
+        <Card style={{ width: WIDTH - MARGIN, margin: MARGIN }}>
+          <Card.Header
+            title={<MyAppText style={{ fontSize: 20, fontFamily: 'ProximaNovaBold' }}>Signup</MyAppText>}
           />
 
-          <WhiteSpace />
+          <Card.Body>
+            <InputItem
+              type='text'
+              placeholder='First Name'
+              onChange={firstName => this.setState({ firstName })}
+              value={this.state.firstName}
+              error={this.state.firstName === '' && this.state.triedLoggingIn}
+              styles={inputStyles}
+            />
 
-          <InputItem
-            type='text'
-            placeholder='Last Name'
-            onChange={lastName => this.setState({ lastName })}
-            value={this.state.lastName}
-            error={this.state.lastName === '' && this.state.triedLoggingIn}
-            styles={inputStyles}
-          />
+            <WhiteSpace />
 
-          <WhiteSpace />
+            <InputItem
+              type='text'
+              placeholder='Last Name'
+              onChange={lastName => this.setState({ lastName })}
+              value={this.state.lastName}
+              error={this.state.lastName === '' && this.state.triedLoggingIn}
+              styles={inputStyles}
+            />
 
-          <InputItem
-            type='text'
-            placeholder='Email'
-            onChange={email => this.setState({ email })}
-            value={this.state.email}
-            error={
-              this.state.triedLoggingIn &&
-              (this.state.password === '' || this.state.error.toLowerCase().indexOf('user') >= 0)
-            }
-          />
+            <WhiteSpace />
 
-          <WhiteSpace />
+            <InputItem
+              type='text'
+              placeholder='Email'
+              onChange={email => this.setState({ email })}
+              value={this.state.email}
+              error={
+                this.state.triedLoggingIn &&
+                (this.state.password === '' || this.state.error.toLowerCase().indexOf('user') >= 0)
+              }
+            />
 
-          <InputItem
-            type='password'
-            placeholder='Password'
-            onChange={password => this.setState({ password })}
-            value={this.state.password}
-            error={this.state.password === '' && this.state.triedLoggingIn}
+            <WhiteSpace />
 
-          />
+            <InputItem
+              type='password'
+              placeholder='Password'
+              onChange={password => this.setState({ password })}
+              value={this.state.password}
+              error={this.state.password === '' && this.state.triedLoggingIn}
 
-          <MyAppText style={styles.error}>
-            {this.state.error}
-          </MyAppText>
+            />
 
-          <Button
-            primary
-            loading={this.state.loading}
-            onClick={this.onCreateUserButtonPress}
-            style={{ margin: 15 }}
-          >
-            <MyAppText>Create User</MyAppText>
-          </Button>
-        </Card.Body>
-      </Card>
+            <MyAppText style={styles.error}>
+              {this.state.error}
+            </MyAppText>
+
+            <Button
+              primary
+              loading={this.state.loading}
+              onClick={this.onCreateUserButtonPress}
+              style={{ margin: 15 }}
+            >
+              <MyAppText>Create User</MyAppText>
+            </Button>
+          </Card.Body>
+        </Card>
+      </KeyboardAvoidingView>
     )
   }
 }

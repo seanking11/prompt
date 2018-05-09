@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Dimensions, AsyncStorage, Keyboard } from 'react-native'
+import { Dimensions, AsyncStorage, Keyboard, KeyboardAvoidingView } from 'react-native'
 import { Button, Card, InputItem, WhiteSpace } from 'antd-mobile'
 import { graphql, compose } from 'react-apollo'
 import InputItemStyle from 'antd-mobile/lib/input-item/style/index.native'
@@ -78,46 +78,48 @@ class LoginForm extends Component {
     }
 
     return (
-      <Card style={{ width: WIDTH - MARGIN, margin: MARGIN }}>
-        <Card.Header
-          title={<MyAppText style={{ fontSize: 20, fontFamily: 'ProximaNovaBold' }}>Login</MyAppText>}
-        />
-
-        <Card.Body>
-          <InputItem
-            type='text'
-            placeholder='Email'
-            onChange={phone => this.props.emailChanged(phone)}
-            value={this.props.email}
-            error={this.state.error.toLowerCase().indexOf('email') >= 0}
-            styles={inputStyles}
+      <KeyboardAvoidingView enabled behavior='padding'>
+        <Card style={{ width: WIDTH - MARGIN, margin: MARGIN }}>
+          <Card.Header
+            title={<MyAppText style={{ fontSize: 20, fontFamily: 'ProximaNovaBold' }}>Login</MyAppText>}
           />
 
-          <WhiteSpace />
+          <Card.Body>
+            <InputItem
+              type='text'
+              placeholder='Email'
+              onChange={phone => this.props.emailChanged(phone)}
+              value={this.props.email}
+              error={this.state.error.toLowerCase().indexOf('email') >= 0}
+              styles={inputStyles}
+            />
 
-          <InputItem
-            type='password'
-            placeholder='Password'
-            onChangeText={this.onPasswordChange}
-            value={this.props.password}
-            error={this.state.error.toLowerCase().indexOf('password') >= 0}
-            styles={inputStyles}
-          />
+            <WhiteSpace />
 
-          <MyAppText style={{ fontSize: 18, color: 'red', alignSelf: 'center' }}>
-            {this.state.error}
-          </MyAppText>
+            <InputItem
+              type='password'
+              placeholder='Password'
+              onChangeText={this.onPasswordChange}
+              value={this.props.password}
+              error={this.state.error.toLowerCase().indexOf('password') >= 0}
+              styles={inputStyles}
+            />
 
-          <Button
-            primary
-            loading={this.state.loading}
-            onClick={this.onLoginButtonPress}
-            style={{ margin: 15 }}
-          >
-            <MyAppText>Login</MyAppText>
-          </Button>
-        </Card.Body>
-      </Card>
+            <MyAppText style={{ fontSize: 18, color: 'red', alignSelf: 'center' }}>
+              {this.state.error}
+            </MyAppText>
+
+            <Button
+              primary
+              loading={this.state.loading}
+              onClick={this.onLoginButtonPress}
+              style={{ margin: 15 }}
+            >
+              <MyAppText>Login</MyAppText>
+            </Button>
+          </Card.Body>
+        </Card>
+      </KeyboardAvoidingView>
     )
   }
 }
