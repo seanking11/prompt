@@ -145,6 +145,7 @@ class FeedScreen extends Component {
           visible={this.state.createPostModalVisible}
           image={this.state.newPostImage}
           closeModal={() => this.setState({ createPostModalVisible: false })}
+          promptId={this.props.data.Prompt ? this.props.data.Prompt.id : null}
         />
       </View>
     )
