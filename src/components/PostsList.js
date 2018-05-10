@@ -38,6 +38,7 @@ class PostsList extends Component {
               onRefresh={this._refresh}
             />
           }
+          contentContainerStyle={{ paddingBottom: 75 }}
         >
           {this.props.data.allPosts.map(post => (
             <Post
