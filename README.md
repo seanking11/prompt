@@ -35,7 +35,8 @@ npm install
 * "Open Existing Project"
 * Navigate to cloned repo location and open
 * Click "Share" in top right corner to run on device.
-* Open [Expo App](https://itunes.apple.com/us/app/expo-client/id982107779?mt=8) on mobile device and scan QR code on screen
+* Type in your mobile phone number to get sent a link to open up in [Expo App](https://itunes.apple.com/us/app/expo-client/id982107779?mt=8). If using an old version of Expo, scan the QR code.
+* Click on the link in your messages to open up Prompt within [Expo App](https://itunes.apple.com/us/app/expo-client/id982107779?mt=8).
 
 ## License
 
