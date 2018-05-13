@@ -133,10 +133,19 @@ class FeedScreen extends Component {
           visible={this.state.promptModalVisibile}
           transparent
           title={<MyAppText style={{ fontFamily: 'ProximaNovaBold', fontSize: 20 }}>Today's Prompt:</MyAppText>}
-          footer={[{
-            text: <MyAppText>Got it!</MyAppText>,
-            onPress: () => this.setState({ promptModalVisibile: false })
-          }]}
+          footer={[
+            {
+              text: <MyAppText>Submit a prompt</MyAppText>,
+              onPress: () => {
+                this.setState({ promptModalVisibile: false })
+                this.props.navigation.navigate('submitPrompt')
+              }
+            },
+            {
+              text: <MyAppText>Got it!</MyAppText>,
+              onPress: () => this.setState({ promptModalVisibile: false })
+            }
+          ]}
         >
           <PromptSection />
         </PromptModal>
