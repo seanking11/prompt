@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { KeyboardAvoidingView } from 'react-native'
-import { Button, InputItem, TextareaItem } from 'antd-mobile'
+import { Button, InputItem, List } from 'antd-mobile'
 import InputItemStyle from 'antd-mobile/lib/input-item/style/index.native'
+import TextAreaItemStyle from 'antd-mobile/lib/textarea-item/style/index.native'
 import { MyAppText } from '../common'
 
 const HeaderTitle = () => (
@@ -9,6 +10,25 @@ const HeaderTitle = () => (
     Submit a prompt
   </MyAppText>
 )
+
+const styles = {
+  inputStyle: {
+    ...InputItemStyle,
+    margin: 15,
+    input: {
+      ...InputItemStyle.input,
+      fontFamily: 'ProximaNovaRegular'
+    }
+  },
+  textAreaStyle: {
+    ...TextAreaItemStyle,
+    margin: 15,
+    input: {
+      ...TextAreaItemStyle,
+      fontFamily: 'ProximaNovaRegular'
+    }
+  }
+}
 
 class SubmitPromptScreen extends Component {
   static navigationOptions = () => ({
@@ -20,45 +40,43 @@ class SubmitPromptScreen extends Component {
     tagLine: '',
     description: ''
   }
-  render() {
-    const inputStyles = {
-      ...InputItemStyle,
-      input: {
-        ...InputItemStyle.input,
-        fontFamily: 'ProximaNovaRegular'
-      }
-    }
 
+  render() {
     return (
       <KeyboardAvoidingView enabled behavior='padding'>
-        <InputItem
-          type='text'
-          placeholder='Title'
-          onChange={title => this.setState({ title })}
-          value={this.state.title}
-          styles={inputStyles}
-        />
+        <List renderHeader={() => 'Title'}>
+          <InputItem
+            type='text'
+            placeholder='The main instructions for your prompt'
+            onChange={title => this.setState({ title })}
+            value={this.state.title}
+            styles={styles.inputStyle}
+          />
+        </List>
 
-        <InputItem
-          type='text'
-          placeholder='Tag Line'
-          onChange={tagLine => this.setState({ tagLine })}
-          value={this.state.tagLine}
-          styles={inputStyles}
-        />
 
-        <TextareaItem
-          autoHeight
-          type='text'
-          placeholder='Description'
-          onChange={description => this.setState({ description })}
-          value={this.state.description}
-          styles={inputStyles}
-        />
+        <List renderHeader={() => 'Tag Line'}>
+          <InputItem
+            type='text'
+            placeholder='Appears in the header the day of being used'
+            onChange={tagLine => this.setState({ tagLine })}
+            value={this.state.tagLine}
+            styles={styles.inputStyle}
+            maxLength={15}
+          />
+        </List>
 
-        <Button>
-          Submit
-        </Button>
+        <List renderHeader={() => 'Description'}>
+          <InputItem
+            type='text'
+            placeholder='Pose a question, offer some inspiration!'
+            onChange={description => this.setState({ description })}
+            value={this.state.description}
+            styles={styles.inputStyle}
+          />
+        </List>
+
+        <Button type='primary'>Submit</Button>
       </KeyboardAvoidingView>
     )
   }
