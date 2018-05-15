@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { KeyboardAvoidingView } from 'react-native'
+import { View } from 'react-native'
 import { Button, InputItem, List } from 'antd-mobile'
 import InputItemStyle from 'antd-mobile/lib/input-item/style/index.native'
-import TextAreaItemStyle from 'antd-mobile/lib/textarea-item/style/index.native'
-import { MyAppText } from '../common'
+import { MyAppText, DismissKeyboard } from '../common'
+
+const DismissKeyboardView = DismissKeyboard(View)
 
 const HeaderTitle = () => (
   <MyAppText style={{ fontFamily: 'ProximaNovaBold', fontSize: 20 }}>
@@ -20,13 +21,9 @@ const styles = {
       fontFamily: 'ProximaNovaRegular'
     }
   },
-  textAreaStyle: {
-    ...TextAreaItemStyle,
+  buttonStyles: {
     margin: 15,
-    input: {
-      ...TextAreaItemStyle,
-      fontFamily: 'ProximaNovaRegular'
-    }
+    marginTop: 20
   }
 }
 
@@ -43,7 +40,7 @@ class SubmitPromptScreen extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView enabled behavior='padding'>
+      <DismissKeyboardView>
         <List renderHeader={() => 'Title'}>
           <InputItem
             type='text'
@@ -76,8 +73,8 @@ class SubmitPromptScreen extends Component {
           />
         </List>
 
-        <Button type='primary'>Submit</Button>
-      </KeyboardAvoidingView>
+        <Button type='primary' style={styles.buttonStyles}>Submit</Button>
+      </DismissKeyboardView>
     )
   }
 }
