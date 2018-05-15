@@ -63,6 +63,9 @@ export default class App extends Component {
         }, {
           navigationOptions: {
             gesturesEnabled: false
+          },
+          cardStyle: {
+            backgroundColor: '#FFFFFF'
           }
         })
       }
