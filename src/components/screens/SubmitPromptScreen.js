@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View, Dimensions } from 'react-native'
 import { Button, InputItem, List } from 'antd-mobile'
 import InputItemStyle from 'antd-mobile/lib/input-item/style/index.native'
+import DatePicker from 'react-native-datepicker'
 import { MyAppText, DismissKeyboard } from '../common'
 
 const DismissKeyboardView = DismissKeyboard(View)
@@ -24,6 +25,25 @@ const styles = {
   buttonStyles: {
     margin: 15,
     marginTop: 20
+  },
+  datePickerStyles: {
+    width: Dimensions.get('window').width
+  },
+  customDateStyles: {
+    dateInput: {
+      borderWidth: 0,
+      alignItems: 'flex-start',
+      marginLeft: 15
+    },
+    placeholderText: {
+      fontFamily: 'ProximaNovaRegular',
+      fontSize: 17
+    },
+    dateText: {
+      fontFamily: 'ProximaNovaRegular',
+      color: '#000000',
+      fontSize: 17
+    }
   }
 }
 
@@ -35,7 +55,8 @@ class SubmitPromptScreen extends Component {
   state = {
     title: '',
     tagLine: '',
-    description: ''
+    description: '',
+    date: ''
   }
 
   render() {
@@ -70,6 +91,21 @@ class SubmitPromptScreen extends Component {
             onChange={description => this.setState({ description })}
             value={this.state.description}
             styles={styles.inputStyle}
+          />
+        </List>
+
+        <List renderHeader={() => 'Launch Date (Optional)'}>
+          <DatePicker
+            style={styles.datePickerStyles}
+            date={this.state.date}
+            mode='date'
+            placeholder='Day you want this prompt to appear'
+            format='MM-DD-YYYY'
+            confirmBtnText='Confirm'
+            cancelBtnText='Cancel'
+            showIcon={false}
+            onDateChange={date => this.setState({ date })}
+            customStyles={styles.customDateStyles}
           />
         </List>
 
