@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { View, Dimensions } from 'react-native'
+import { graphql } from 'react-apollo'
 import { Button, InputItem, List } from 'antd-mobile'
 import InputItemStyle from 'antd-mobile/lib/input-item/style/index.native'
 import DatePicker from 'react-native-datepicker'
+import createPromptMutation from '../../mutations/createPrompt'
 import { MyAppText, DismissKeyboard } from '../common'
 
 const DismissKeyboardView = DismissKeyboard(View)
@@ -54,9 +56,21 @@ class SubmitPromptScreen extends Component {
 
   state = {
     title: '',
-    tagLine: '',
+    tagline: '',
     description: '',
-    date: ''
+    suggestedLaunchDate: null
+  }
+
+  _handleOnSubmit = () => {
+    const date = new Date(`${this.state.suggestedLaunchDate}T04:00:00.000Z`)
+    const vars = {
+      title: this.state.title,
+      tagline: this.state.tagline,
+      description: this.state.description,
+      suggestedLaunchDate: date
+    }
+    this.props.mutate({ variables: vars })
+      .catch(err => console.log(err)) // eslint-disable-line no-console
   }
 
   render() {
@@ -77,8 +91,8 @@ class SubmitPromptScreen extends Component {
           <InputItem
             type='text'
             placeholder='Appears in the header the day of being used'
-            onChange={tagLine => this.setState({ tagLine })}
-            value={this.state.tagLine}
+            onChange={tagline => this.setState({ tagline })}
+            value={this.state.tagline}
             styles={styles.inputStyle}
             maxLength={15}
           />
@@ -97,22 +111,28 @@ class SubmitPromptScreen extends Component {
         <List renderHeader={() => 'Launch Date (Optional)'}>
           <DatePicker
             style={styles.datePickerStyles}
-            date={this.state.date}
+            date={this.state.suggestedLaunchDate}
             mode='date'
             placeholder='Day you want this prompt to appear'
-            format='MM-DD-YYYY'
+            format='YYYY-MM-DD'
             confirmBtnText='Confirm'
             cancelBtnText='Cancel'
             showIcon={false}
-            onDateChange={date => this.setState({ date })}
+            onDateChange={suggestedLaunchDate => this.setState({ suggestedLaunchDate })}
             customStyles={styles.customDateStyles}
           />
         </List>
 
-        <Button type='primary' style={styles.buttonStyles}>Submit</Button>
+        <Button
+          type='primary'
+          style={styles.buttonStyles}
+          onClick={this._handleOnSubmit}
+        >
+          Submit
+        </Button>
       </DismissKeyboardView>
     )
   }
 }
 
-export default SubmitPromptScreen
+export default graphql(createPromptMutation)(SubmitPromptScreen)
