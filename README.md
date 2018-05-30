@@ -11,6 +11,7 @@ Prompt is a mobile application written in React Native. Each day, find yourself 
  - Display all posts from today
  - Create posts
  - Animated card to reveal caption
+ - Submit your own prompts for review
  - Subscriptions (WIP)
 
 ## Getting Started
