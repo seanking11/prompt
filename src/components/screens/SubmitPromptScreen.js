@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Dimensions } from 'react-native'
 import { graphql } from 'react-apollo'
-import { Button, InputItem, List } from 'antd-mobile'
+import { Button, InputItem, List, Toast } from 'antd-mobile'
 import InputItemStyle from 'antd-mobile/lib/input-item/style/index.native'
 import DatePicker from 'react-native-datepicker'
 import createPromptMutation from '../../mutations/createPrompt'
@@ -58,7 +58,8 @@ class SubmitPromptScreen extends Component {
     title: '',
     tagline: '',
     description: '',
-    suggestedLaunchDate: null
+    suggestedLaunchDate: null,
+    loading: false
   }
 
   _handleOnSubmit = () => {
@@ -69,8 +70,19 @@ class SubmitPromptScreen extends Component {
       description: this.state.description,
       suggestedLaunchDate: date
     }
+
+    this.setState({ loading: true })
+
     this.props.mutate({ variables: vars })
-      .catch(err => console.log(err)) // eslint-disable-line no-console
+      .then(() => {
+        this.setState({ loading: false })
+        Toast.info('Prompt successfully submitted!')
+        this.props.navigation.pop()
+      })
+      .catch(err => {
+        console.log(err) // eslint-disable-line no-console
+        this.setState({ loading: false })
+      })
   }
 
   render() {
@@ -127,6 +139,7 @@ class SubmitPromptScreen extends Component {
           type='primary'
           style={styles.buttonStyles}
           onClick={this._handleOnSubmit}
+          loading={this.state.loading}
         >
           Submit
         </Button>
