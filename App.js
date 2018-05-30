@@ -13,9 +13,10 @@ import reducers from './src/reducers'
 import client from './src/client'
 import {
   AuthScreen,
+  FeedScreen,
   OnboardingScreen,
   ProfileScreen,
-  FeedScreen
+  SubmitPromptScreen
 } from './src/components/screens'
 
 // Log network requests
@@ -57,10 +58,14 @@ export default class App extends Component {
       main: {
         screen: StackNavigator({ // eslint-disable-line new-cap
           feed: { screen: FeedScreen },
-          profile: { screen: ProfileScreen }
+          profile: { screen: ProfileScreen },
+          submitPrompt: { screen: SubmitPromptScreen }
         }, {
           navigationOptions: {
             gesturesEnabled: false
+          },
+          cardStyle: {
+            backgroundColor: '#FFFFFF'
           }
         })
       }
