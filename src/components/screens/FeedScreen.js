@@ -120,7 +120,9 @@ class FeedScreen extends Component {
           hidden={this.state.createPostModalVisible}
         />
 
-        <PostsList />
+        <PostsList
+          closeModal={() => this.setState({ createPostModalVisible: false })}
+        />
 
         <FAB
           buttonColor='#000'

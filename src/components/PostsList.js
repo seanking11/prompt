@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { ScrollView, ActivityIndicator, View, RefreshControl } from 'react-native'
 import { graphql } from 'react-apollo'
+import { Button } from 'antd-mobile'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { MyAppText } from './common'
 import Post from './Post'
@@ -26,6 +27,13 @@ class PostsList extends Component {
             <MyAppText style={{ fontFamily: 'ProximaNovaBold', fontSize: 25, color: '#606060' }}>
               No posts today!
             </MyAppText>
+            <Button
+              primary
+              onClick={() => this.props.closeModal()}
+              style={{ margin: 15 }}
+            >
+              <MyAppText>Be the first!</MyAppText>
+            </Button>
           </View>
         )
       }
