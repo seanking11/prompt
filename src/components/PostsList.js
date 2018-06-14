@@ -28,8 +28,8 @@ class PostsList extends Component {
               No posts today!
             </MyAppText>
             <Button
-              primary
-              onClick={() => this.props.closeModal()}
+              type='primary'
+              onClick={() => this.props.onCTAButtonClick()}
               style={{ margin: 15 }}
             >
               <MyAppText>Be the first!</MyAppText>

@@ -121,7 +121,7 @@ class FeedScreen extends Component {
         />
 
         <PostsList
-          closeModal={() => this.setState({ createPostModalVisible: false })}
+          onCTAButtonClick={() => this.savePhoto()}
         />
 
         <FAB
