@@ -8,6 +8,15 @@ const START_VALUE = 0
 const END_VALUE = HEIGHT
 const DURATION = 500
 
+const styles = {
+  image: {
+    flex: 1,
+    width: null,
+    height: null,
+    borderRadius: 10
+  }
+}
+
 class CreatePost extends Component {
   state = {
     viewY: new Animated.Value(START_VALUE),
@@ -51,18 +60,6 @@ class CreatePost extends Component {
         </Card>
       </Animated.View>
     )
-  }
-}
-
-const styles = {
-  container: {
-
-  },
-  image: {
-    flex: 1,
-    width: null,
-    height: null,
-    borderRadius: 10
   }
 }
 

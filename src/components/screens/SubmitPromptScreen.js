@@ -45,6 +45,13 @@ const styles = {
       fontFamily: 'ProximaNovaRegular',
       color: '#000000',
       fontSize: 17
+    },
+    btnTextConfirm: {
+      color: '#0F8EE9',
+      fontFamily: 'ProximaNovaRegular'
+    },
+    btnTextCancel: {
+      fontFamily: 'ProximaNovaRegular'
     }
   }
 }
