@@ -7,7 +7,7 @@ import { graphql, compose } from 'react-apollo'
 import FAB from 'react-native-fab'
 import { Modal as PromptModal } from 'antd-mobile'
 import { MyAppText, Avatar } from '../common'
-import PostsList from '../PostsList'
+import FeedPosts from '../FeedPosts'
 import CreatePostModal from '../CreatePostModal'
 import fetchPrompt from '../../queries/fetchPrompt'
 
@@ -120,7 +120,7 @@ class FeedScreen extends Component {
           hidden={this.state.createPostModalVisible}
         />
 
-        <PostsList
+        <FeedPosts
           onCTAButtonClick={() => this.savePhoto()}
         />
 
